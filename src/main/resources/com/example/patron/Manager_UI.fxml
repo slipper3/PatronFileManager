@@ -73,8 +73,8 @@
          </children>
       </AnchorPane>
       <SplitPane dividerPositions="0.2715430861723447" layoutX="-6.0" layoutY="40.0" prefHeight="760.0" prefWidth="1000.0" style="-fx-background-color: #936e4e;" stylesheets="@../../../styles/app.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #f8f0dd;">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #f8f0dd;">
                <children>
                   <AnchorPane prefHeight="30.0" prefWidth="268.0">
                      <children>
@@ -91,7 +91,7 @@
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="752.0" prefWidth="724.0" style="-fx-background-color: #f8f0dd;">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="752.0" prefWidth="724.0" style="-fx-background-color: #f8f0dd;">
                <children>
                   <AnchorPane id="tool_pane" prefHeight="30.0" prefWidth="724.0" style="-fx-background-color: #d3b090;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
@@ -163,29 +163,34 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                      <children>
-                        <AnchorPane prefHeight="254.0" prefWidth="724.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label layoutX="14.0" layoutY="14.0" text="Швидкий доступ">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutY="300.0" prefHeight="450.0" prefWidth="724.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <children>
-                              <Label layoutX="14.0" layoutY="14.0" text="Диски">
-                                 <font>
-                                    <Font name="Segoe UI" size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
+                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="726.0" prefWidth="723.0" style="-fx-border-color: #936e4e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                 <children>
+                                    <Label text="Швидкий доступ" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                 <children>
+                                    <Label text="Накопичувачі" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                       <font>
+                                          <Font name="Segoe UI" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                        <AnchorPane prefHeight="726.0" prefWidth="723.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-        </items>
+         </items>
       </SplitPane>
       <AnchorPane layoutY="42.0" prefHeight="760.0" prefWidth="1000.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
          <children>

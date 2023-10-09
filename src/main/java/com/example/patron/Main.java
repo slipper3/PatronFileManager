@@ -5,25 +5,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.util.Objects;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage stage) throws Exception {
-        AnchorPane root = (AnchorPane) loadFXML("Manager_UI");
-        Scene scene = new Scene(root, 1200, 850);
-
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Manager_UI.fxml")));
         stage.setTitle("Patron");
-        stage.setScene(scene);
+        stage.getIcons().add(new Image(new FileInputStream("src/main/resources/Images/icon.jpg")));
+        stage.setScene(new Scene(root));
         stage.show();
-    }
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
     }
     public static void main(String[] args) {
         launch(args);
