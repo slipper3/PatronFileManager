@@ -1,4 +1,4 @@
-package com.example.patron.classes;
+package exampleCode;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
@@ -6,8 +6,6 @@ import javafx.scene.image.ImageView;
 
 /**
  * Created by Fahim on 4/19/2017.
- *
- * Commented and modded 10/8/2023 by slipper3
  */
 public class FileInfo {
     //private SimpleIntegerProperty id;

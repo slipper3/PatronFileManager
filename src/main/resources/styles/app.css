@@ -4,7 +4,17 @@
 .split-pane:vertical > .split-pane-divider {
     -fx-background-color: #936e4e;
 }
-.split-pane{
+.split-pane {
     -fx-background-color:  #f8f0dd;
     -fx-border-color: #936e4e;
+}
+.tree-view {
+    -fx-background-color: #f8f0dd;
+}
+.table-view {
+    -fx-background-color: #f8f0dd;
+}
+.table-view .column-header-background .filler {
+    -fx-background-color: #f8f0dd;
+    -fx-border-color:  #d3b090;
 }

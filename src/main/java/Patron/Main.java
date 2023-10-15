@@ -1,4 +1,4 @@
-package com.example.patron;
+package Patron;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Manager_UI.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ManagerUI.fxml")));
         stage.setTitle("Patron");
         stage.getIcons().add(new Image(new FileInputStream("src/main/resources/Images/icon.jpg")));
         stage.setScene(new Scene(root));

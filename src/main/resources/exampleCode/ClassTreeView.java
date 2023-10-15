@@ -1,6 +1,6 @@
-package com.example.patron.classes;
+package exampleCode;
 
-import com.example.patron.classes.FileExplorerFx;
+import classes.FileExplorerFx;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;

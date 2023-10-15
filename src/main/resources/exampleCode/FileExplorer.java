@@ -1,4 +1,4 @@
-package com.example.patron.classes;
+package exampleCode;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;

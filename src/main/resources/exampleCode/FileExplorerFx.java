@@ -1,4 +1,4 @@
-package com.example.patron.classes;
+package exampleCode;
 
 
 import javafx.scene.control.Label;
@@ -70,40 +70,59 @@ public abstract class FileExplorerFx implements FileExplorer{
         return imgfx;
     }
 
+
     public void setLabelTxt(){
 
         lbl.setText(CurrDirStr);
     }
 
     public String calculateSize(File f){
+        /**
+         * Функція розрахунку ваги файлу
+         */
 
         String s;long sizeInByte=0; Path path;
 
+        /**Розрахунок ваги для диску*/
         if(IsDrive(f)){
             return Long.toString(f.getTotalSpace()/(1024*1024*1024))+"GB";
         }
+        //-------------------------//
 
-        path = Paths.get(f.toURI());
+        path = Paths.get(f.toURI()); // Отримуємо шлях до файлу
         //sizeInByte = f.getTotalSpace(); // terrible idea cz sob subfolder e 199GB, 99GB esob dekhay >_<
         try {
-            sizeInByte = Files.size(path);//at least works ^_^
+            sizeInByte = Files.size(path);//at least works ^_^ отримуємо розмір файлу в байтах
         } catch (IOException e) {
             e.printStackTrace();
         }
+        /**В конструкції if, else if виконуємо перевірку розміру файла
+         * і відповідн до розміру обираємо одиницю вимірювання (Б, КБ, МБ, ГБ)
+         * та ділимо байти щоб отрмати значення відповідної величини*/
         if(sizeInByte<(1024)){
-            s = Long.toString(sizeInByte)+"B";
+            s = Long.toString(sizeInByte)+"B";  //Якощ розмір менше 1кб
             return s;
         }
-        else if(sizeInByte>=(1024) && sizeInByte<(1024*1024)){ long sizeInKb = sizeInByte/1024; s = Long.toString(sizeInKb)+"KB"; return s; }
-        else if(sizeInByte>=(1024*1024) && sizeInByte<(1024*1024*1024)){ long sizeInMb = sizeInByte/(1024*1024); s = Long.toString(sizeInMb)+"MB"; return s; }
-        else if(sizeInByte>=(1024*1024*1024)){ long sizeInGb = sizeInByte/(1024*1024*1024); s = Long.toString(sizeInGb)+"GB"; return s; }
+        else if(sizeInByte>=(1024) && sizeInByte<(1024*1024)){
+            long sizeInKb = sizeInByte/1024; s = Long.toString(sizeInKb)+"KB"; return s; //Якщо розмір більше 1кб але менше 1мб
+        }
+        else if(sizeInByte>=(1024*1024) && sizeInByte<(1024*1024*1024)){
+            long sizeInMb = sizeInByte/(1024*1024); s = Long.toString(sizeInMb)+"MB"; return s; //Якщо розмір більше 1мб але менше 1гб
+        }
+        else if(sizeInByte>=(1024*1024*1024)){
+            long sizeInGb = sizeInByte/(1024*1024*1024); s = Long.toString(sizeInGb)+"GB"; return s; //Якщо розмір більше 1гб
+        }
 
         return null;
     }
     public boolean IsDrive(File f){
+        /** Перевіряємо отриманий файл на диск ;l
+         * sysroots присвоюємо ...
+         * в циклі перевіряємо чи відповідає ...*/
         File[] sysroots = File.listRoots();
-        for(int i=0; i<sysroots.length;i++)
-        {if(f.equals(sysroots[i]) )return true; }
+        for(int i=0; i<sysroots.length;i++){
+            if(f.equals(sysroots[i])) return true;
+        }
         return false;
     }
     public int FilesHiddensCount(File dir){

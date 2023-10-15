@@ -4,6 +4,6 @@ module com.example.patron {
     requires java.desktop;
 
 
-    opens com.example.patron to javafx.fxml;
-    exports com.example.patron;
+    opens Patron to javafx.fxml;
+    exports Patron;
 }
