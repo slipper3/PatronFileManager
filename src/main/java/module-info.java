@@ -1,4 +1,4 @@
-module com.example.patron {
+module Patron {
     requires transitive javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
