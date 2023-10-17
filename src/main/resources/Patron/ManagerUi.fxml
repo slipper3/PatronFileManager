@@ -19,7 +19,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="300" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Patron.Controller">
    <VBox prefHeight="800.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="1000.0" spacing="3.0" style="-fx-background-color: #d3b090;">
+      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="1000.0" spacing="3.0" style="-fx-background-color: #d3b090; -fx-border-color: #936e4e; -fx-border-width: 2;">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -100,7 +100,7 @@
       </HBox>
       <SplitPane dividerPositions="0.2715430861723447" prefHeight="150.0" prefWidth="1000.0" style="-fx-background-color: #936e4e;" stylesheets="@../styles/app.css" VBox.vgrow="ALWAYS">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #f8f0dd;">
-            <VBox prefHeight="753.0" prefWidth="267.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox prefHeight="753.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <AnchorPane styleClass="homebutton" VBox.vgrow="NEVER">
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="37.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" text="Home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <graphic>
@@ -116,7 +116,7 @@
                      </cursor>
                   </Button>
                </AnchorPane>
-               <TreeView prefHeight="719.0" prefWidth="267.0" stylesheets="@../styles/app.css" VBox.vgrow="ALWAYS" />
+               <TreeView prefHeight="719.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" VBox.vgrow="ALWAYS" />
             </VBox>
          </AnchorPane>
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="752.0" prefWidth="724.0" style="-fx-background-color: #f8f0dd;">
