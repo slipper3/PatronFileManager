@@ -18,3 +18,13 @@
     -fx-background-color: #f8f0dd;
     -fx-border-color:  #d3b090;
 }
+
+
+
+.button{
+    -fx-background-color: #d3b090;
+}
+
+.button:hover{
+    -fx-background-color: #b1947f;
+}
