@@ -2,35 +2,39 @@ package Patron;
 
 import Moduls.TableViewItem;
 import Moduls.TreeViewClass;
-import javafx.beans.value.ObservableListValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
 public class Controller implements Initializable {
-    static TreeViewClass Fx1;
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     @FXML
     public ListView listView;
     @FXML
@@ -69,30 +73,32 @@ public class Controller implements Initializable {
          * TableView - https://www.youtube.com/watch?v=fnU1AlyuguE
          * Files.walk - https://www.youtube.com/watch?v=JlibW-BJ6I4&t=362s
          * ListView - https://www.youtube.com/watch?v=Pqfd4hoi5cc&t=74s */
-        name.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("name"));
-        size.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("size"));
-        date.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("date"));
+        name.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("fileName"));
+        size.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("fileSize"));
+        date.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("modDate"));
 
-//        try {
-//            Files.walk(StartDirectory)
-//                    .filter(path -> Files.isDirectory(path))
-//                    .forEach(path -> {
-//                        fileList.add(new TableViewItem(path.toString(), calculateSize(path.toFile()), "date created"));
-//                        //tableView.getItems().add(new TableViewItem(path.toString(), calculateSize(path.toFile()), "date created"));
-//                    });
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            Files.walk(StartDirectory)
+                    .filter(path -> Files.isDirectory(path))
+                    .forEach(path -> {
+                        fileList.add(new TableViewItem(path.toString(), calculateSize(path.toFile()), "date created"));
+                        //tableView.getItems().add(new TableViewItem(path.toString(), calculateSize(path.toFile()), "date created"));
+                    });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        //tableView.getItems().addAll(fileList);
+        tableView.getItems().addAll(fileList);
         tableView.setItems(fileList);
     }
 
-    @FXML
-    public void test(){
-        System.out.println("done");
+    public void switchToAnalytics(javafx.event.ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Analytics.fxml")));
+        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
-
 
     /**Тут додав готові функції з прикладу */
     public String calculateSize(File f){

@@ -2,25 +2,25 @@ package Moduls;
 
 public class TableViewItem {
     /** Клас для об'єктів таблиці*/
-    private String name;
-    private String size;
-    private String date;
+    private String fileName;
+    private String fileSize;
+    private String modDate;
 
     public TableViewItem(String name, String size, String date){
-        this.name = name;
-        this.size = size;
-        this.date = date;
+        this.fileName = name;
+        this.fileSize = size;
+        this.modDate = date;
     }
 
-    public String getSize() {
-        return size;
+    public String getFileSize() {
+        return fileSize;
     }
 
-    public String getDate() {
-        return date;
+    public String getModDate() {
+        return modDate;
     }
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 }
