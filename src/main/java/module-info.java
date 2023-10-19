@@ -5,5 +5,6 @@ module Patron {
 
 
     opens Patron to javafx.fxml;
+    opens Moduls to javafx.base;
     exports Patron;
 }

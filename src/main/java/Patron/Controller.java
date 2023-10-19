@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
@@ -35,6 +36,7 @@ public class Controller implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    public Path DirPath;
     @FXML
     public ListView listView;
     @FXML
@@ -48,51 +50,44 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<TableViewItem> fileList = FXCollections.observableArrayList(
-                new TableViewItem("name", "size", "date")
-        );
+        ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
+        DirPath = Path.of("C:\\Users");
 
-
-        var StartDirectory = Paths.get(System.getProperty("user.dir"));
-        //Path StartDirectory = Path.of("D:\\kpi\\2kurs\\kursova\\kod\\Patron\\src\\main\\resources\\Images");
         /** Тут виводиться список папок певної директорії в об'єкт ListView
-         * Код успішно працює*/
-//        try {
-//            Files.walk(StartDirectory)
-//                    .filter(path -> Files.isDirectory(path))
-//                    .forEach(dir -> {
-//                        listView.getItems().add(new HBox(new TextField(dir.getFileName().toString()), new Label(calculateSize(dir.toFile()))));
-//                    });
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+         * Код успішно працює
+        try {
+            Files.walk(StartDirectory)
+                    .filter(path -> Files.isDirectory(path))
+                    .forEach(dir -> {
+                        listView.getItems().add(new HBox(new TextField(dir.getFileName().toString()), new Label(calculateSize(dir.toFile()))));
+                    });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }*/
 
         /** А в цьому кусочку я намагаюсь вивести список файлфв у вигляді таблиці
          * Код не працює з невідомої мені причини
          * Переглянутий контент:
          * TableView - https://www.youtube.com/watch?v=fnU1AlyuguE
          * Files.walk - https://www.youtube.com/watch?v=JlibW-BJ6I4&t=362s
-         * ListView - https://www.youtube.com/watch?v=Pqfd4hoi5cc&t=74s */
+         * ListView - https://www.youtube.com/watch?v=Pqfd4hoi5cc&t=74s
+         * Files. https://mkyong.com/java/java-files-walk-examples/ */
         name.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("fileName"));
         size.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("fileSize"));
         date.setCellValueFactory(new PropertyValueFactory<TableViewItem, String>("modDate"));
 
-        try {
-            Files.walk(StartDirectory)
-                    .filter(path -> Files.isDirectory(path))
-                    .forEach(path -> {
-                        fileList.add(new TableViewItem(path.toString(), calculateSize(path.toFile()), "date created"));
-                        //tableView.getItems().add(new TableViewItem(path.toString(), calculateSize(path.toFile()), "date created"));
-                    });
-        } catch (IOException e) {
+        try(Stream<Path> walk = Files.walk(DirPath,1)){
+            walk.forEach(path -> {
+                fileList.add(new TableViewItem(path.getFileName().toString(), calculateSize(path.toFile()), "date created"));
+            });
+        }catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        tableView.getItems().addAll(fileList);
         tableView.setItems(fileList);
     }
 
     public void switchToAnalytics(javafx.event.ActionEvent actionEvent) throws IOException {
+        /*Функція перехіду з основної сцени в сцену з аналітикою*/
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Analytics.fxml")));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -100,7 +95,7 @@ public class Controller implements Initializable {
         stage.show();
     }
 
-    /**Тут додав готові функції з прикладу */
+    /**Споміжні функції для виводу списку файлів*/
     public String calculateSize(File f){
         /**
          * Функція розрахунку ваги файлу
@@ -113,6 +108,9 @@ public class Controller implements Initializable {
         /**Розрахунок ваги для диску*/
         if(IsDrive(f)){
             return Long.toString(f.getTotalSpace()/(1024*1024*1024))+"GB";
+        }
+        if(IsFolder(f)){
+            return "";
         }
         //-------------------------//
 
@@ -130,17 +128,15 @@ public class Controller implements Initializable {
             s = Long.toString(sizeInByte)+"B";  //Якощ розмір менше 1кб
             return s;
         }
-        else if(sizeInByte>=(1024) && sizeInByte<(1024*1024)){
+        else if(sizeInByte<(1024*1024)){
             long sizeInKb = sizeInByte/1024; s = Long.toString(sizeInKb)+"KB"; return s; //Якщо розмір більше 1кб але менше 1мб
         }
-        else if(sizeInByte>=(1024*1024) && sizeInByte<(1024*1024*1024)){
+        else if(sizeInByte<(1024*1024*1024)){
             long sizeInMb = sizeInByte/(1024*1024); s = Long.toString(sizeInMb)+"MB"; return s; //Якщо розмір більше 1мб але менше 1гб
         }
-        else if(sizeInByte>=(1024*1024*1024)){
+        else{
             long sizeInGb = sizeInByte/(1024*1024*1024); s = Long.toString(sizeInGb)+"GB"; return s; //Якщо розмір більше 1гб
         }
-
-        return null;
     }
     public boolean IsDrive(File f){
         /** Перевіряємо отриманий файл на диск ;l
@@ -152,7 +148,11 @@ public class Controller implements Initializable {
         }
         return false;
     }
-
+    public boolean IsFolder(File f){
+        Path path = Path.of(f.getPath());
+        if (Files.isDirectory(path)){return true;}
+        return false;
+    }
     public Image getIconImageFX(File f) {
         /**
          * Метод для отримання системних іконок для дисків, папок, файлів
