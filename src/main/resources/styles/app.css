@@ -60,6 +60,14 @@
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color:  #d3b090
 }
+.table-view:focused .table-row-cell:focused {
+    -fx-border-color: derive(-fx-base, 20%);
+    -fx-background-insets: 0 0 0 0;
+    -fx-table-cell-border-color: #d3b090;
+}
+.table-row-cell {
+    -fx-table-cell-border-color: #d3b090;
+}
 #Name{
     -fx-alignment: CENTER-LEFT;
 }
