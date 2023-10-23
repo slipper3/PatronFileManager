@@ -60,6 +60,16 @@
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color:  #d3b090
 }
+#Name{
+    -fx-alignment: CENTER-LEFT;
+}
+#Size{
+    -fx-alignment: CENTER;
+}
+#Date{
+    -fx-alignment: CENTER;
+}
+
 
 
 .button{

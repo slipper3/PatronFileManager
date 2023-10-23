@@ -16,164 +16,215 @@
          <children>
             <HBox prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #d3b090;">
                <children>
-                  <ChoiceBox prefHeight="25.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                  <ChoiceBox prefWidth="60.0" HBox.hgrow="NEVER">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                      </HBox.margin>
+                     <tooltip><Tooltip text="Оберіть накопичувач" /></tooltip>
                   </ChoiceBox>
-                  <Pane prefHeight="38.0" prefWidth="523.0">
+                  <Pane HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Pane>
-                  <Button mnemonicParsing="false" onAction="#switchToMainScene" prefHeight="25.0" prefWidth="25.0" HBox.hgrow="NEVER">
-                     <HBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </HBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Images/Back.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <AnchorPane prefHeight="35.0" prefWidth="35.0">
+                     <children>
+                        <Button fx:id="SwitchScene" mnemonicParsing="false" onAction="#switchToMainScene" prefWidth="25.0">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/Back.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Повернутись до основного вікна" />
+                           </tooltip>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button fx:id="Back" mnemonicParsing="false" onAction="#back" prefWidth="25.0" visible="false">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/Back.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Повернутись до аналітики" />
+                           </tooltip>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </AnchorPane>
                </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </HBox>
-            <PieChart prefHeight="230.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="ALWAYS" />
-            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;">
                <children>
-                  <VBox alignment="CENTER" prefHeight="10.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                  <VBox fx:id="AmalyticVBox" prefHeight="563.0" prefWidth="600.0">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="button">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Images/Image.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
+                        <PieChart prefHeight="230.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="10.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#findFile" styleClass="button">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Images/Image.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#findFile" styleClass="button">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Images/Video.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#findFile" styleClass="button">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Images/Documents.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="68.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#findFile" styleClass="button">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Images/Music.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#findFile" styleClass="button">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Images/RAR.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#findFile" styleClass="button">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Images/Download.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="85.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="button">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Images/Video.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="button">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Images/Documents.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
+                  <TableView fx:id="AnalyticTable" prefHeight="563.0" prefWidth="600.0" stylesheets="@../styles/analytic.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn prefWidth="295.0" text="Name" />
+                      <TableColumn minWidth="0.0" prefWidth="152.0" text="Size" />
+                        <TableColumn minWidth="0.0" prefWidth="192.0" text="Data" />
+                    </columns>
+                  </TableView>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="button">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Images/Music.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="button">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Images/RAR.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="button">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <Pane prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" />
+            </AnchorPane>
          </children>
       </VBox>
    </children>
