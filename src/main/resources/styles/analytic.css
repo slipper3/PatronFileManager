@@ -67,7 +67,7 @@
 }
 
 .button:hover{
-    -fx-background-color: transparent;
+    -fx-background-color: #b1947f;
 }
 
 .choice-box{
