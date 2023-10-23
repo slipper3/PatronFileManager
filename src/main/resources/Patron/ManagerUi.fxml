@@ -167,80 +167,80 @@
                                     <Button fx:id="Create" mnemonicParsing="false" HBox.hgrow="NEVER">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
                                              <image>
                                                 <Image url="@../Images/create.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Створити" /></tooltip>
                                     </Button>
                                     <Button mnemonicParsing="false" HBox.hgrow="NEVER">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
                                              <image>
                                                 <Image url="@../Images/past.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Вставити" /></tooltip>
                                     </Button>
                                     <Button mnemonicParsing="false" HBox.hgrow="NEVER">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
                                              <image>
                                                 <Image url="@../Images/cut.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Вирізати" /></tooltip>
                                     </Button>
                                     <Button mnemonicParsing="false" HBox.hgrow="NEVER">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
                                              <image>
                                                 <Image url="@../Images/copy.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Скопіювати" /></tooltip>
                                     </Button>
                                     <Button mnemonicParsing="false" HBox.hgrow="NEVER">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
                                              <image>
                                                 <Image url="@../Images/delete.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Видалити" /></tooltip>
                                     </Button>
                                     <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                     <Button mnemonicParsing="false" HBox.hgrow="NEVER">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
                                              <image>
                                                 <Image url="@../Images/sotr.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Сортувати" /></tooltip>
                                     </Button>
                                     <Button mnemonicParsing="false" onAction="#switchToAnalytics">
@@ -251,6 +251,9 @@
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <tooltip><Tooltip text="Аналітика" /></tooltip>
                                     </Button>
                                  </children>

@@ -27,8 +27,6 @@ public class AnalyticsControl {
     public Button SwitchScene;
     @FXML
     public Button Back;
-
-
     public void switchToMainScene(javafx.event.ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ManagerUi.fxml")));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -49,3 +47,4 @@ public class AnalyticsControl {
         AmalyticVBox.setVisible(false);
     }
 }
+
