@@ -240,9 +240,9 @@
                <AnchorPane prefHeight="714.0" prefWidth="723.0" VBox.vgrow="ALWAYS">
                   <TableView fx:id="tableView" editable="true" layoutY="7.0" prefHeight="719.0" prefWidth="723.0" stylesheets="@../styles/app.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn id="Name" fx:id="name" editable="false" prefWidth="369.0" sortable="false" text="Name" />
-                        <TableColumn id="Size" fx:id="size" editable="false" minWidth="0.0" prefWidth="173.0" sortable="false" text="Size" />
-                        <TableColumn id="Date" fx:id="date" editable="false" prefWidth="180.0" sortable="false" text="Date" />
+                        <TableColumn id="Name" fx:id="name" editable="false" minWidth="60.0" prefWidth="369.0" sortable="false" text="Name" />
+                        <TableColumn id="Size" fx:id="size" editable="false" minWidth="60.0" prefWidth="173.0" sortable="false" text="Size" />
+                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Date" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
