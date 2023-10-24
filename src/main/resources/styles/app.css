@@ -32,6 +32,10 @@
 .table-view .column-header{
     -fx-background-color: #f8f0dd;
 }
+.table-view .column-header{
+    -fx-border-insets: -1 -1 -1 -1;
+    -fx-border-color: #d3b090;
+}
 .table-row-cell:odd{
     -fx-background-color: #f8f0dd;
 }
