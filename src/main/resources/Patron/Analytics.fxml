@@ -75,21 +75,22 @@
          </AnchorPane>
       </HBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="ALWAYS">
-         <AnchorPane prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-               <TableView fx:id="AnalyticTable" prefHeight="563.0" prefWidth="600.0" stylesheets="@../styles/analytic.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <columns>
-                     <TableColumn minWidth="60.0" prefWidth="295.0" text="Name" />
-                     <TableColumn minWidth="60.0" prefWidth="152.0" text="Size" />
-                     <TableColumn minWidth="60.0" prefWidth="192.0" text="Data" />
-                  </columns>
-                  <columnResizePolicy>
-                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                  </columnResizePolicy>
-               </TableView>
-            </children>
+         <AnchorPane prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView fx:id="AnalyticTable" prefHeight="563.0" prefWidth="600.0" stylesheets="@../styles/analytic.css"
+                       visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columns>
+                  <TableColumn minWidth="60.0" prefWidth="295.0" text="Name"/>
+                  <TableColumn minWidth="60.0" prefWidth="152.0" text="Size"/>
+                  <TableColumn minWidth="60.0" prefWidth="192.0" text="Data"/>
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+               </columnResizePolicy>
+            </TableView>
          </AnchorPane>
-         <VBox fx:id="AmalyticVBox" prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <VBox fx:id="AnalyticVBox" prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <PieChart prefHeight="230.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
                <VBox alignment="CENTER" prefHeight="10.0" prefWidth="60.0" HBox.hgrow="NEVER">

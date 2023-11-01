@@ -11,18 +11,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
 
 public class AnalyticsControl {
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    public Stage stage;
+    public Scene scene;
     @FXML
     public TableView<TableViewItem> AnalyticTable;
     @FXML
-    public VBox AmalyticVBox;
+    public VBox AnalyticVBox;
     @FXML
     public Button SwitchScene;
     @FXML
@@ -34,17 +32,17 @@ public class AnalyticsControl {
         stage.setScene(scene);
         stage.show();
     }
-    public void back(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void back() {
         SwitchScene.setVisible(true);
-        AmalyticVBox.setVisible(true);
+        AnalyticVBox.setVisible(true);
         Back.setVisible(false);
         AnalyticTable.setVisible(false);
     }
-    public void findFile(javafx.event.ActionEvent actionEvent) throws  IOException {
+    public void findFile(){
         Back.setVisible(true);
         AnalyticTable.setVisible(true);
         SwitchScene.setVisible(false);
-        AmalyticVBox.setVisible(false);
+        AnalyticVBox.setVisible(false);
     }
 }
 

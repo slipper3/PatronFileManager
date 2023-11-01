@@ -94,7 +94,7 @@
          </Button>
          <TextField minWidth="150.0" prefHeight="30.0" prefWidth="190.0" promptText="Пошук" HBox.hgrow="NEVER">
             <font>
-               <Font name="Segoe UI" size="14.0" />
+               <Font name="Segue UI" size="14.0" />
             </font>
          </TextField>
          <Button mnemonicParsing="false">
@@ -117,7 +117,7 @@
       <SplitPane dividerPositions="0.2715430861723447" prefHeight="150.0" prefWidth="1000.0" style="-fx-background-color: #936e4e;" stylesheets="@../styles/app.css" VBox.vgrow="ALWAYS">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #f8f0dd;">
             <VBox prefHeight="753.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <AnchorPane styleClass="homebutton" VBox.vgrow="NEVER">
+               <AnchorPane VBox.vgrow="NEVER">
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="37.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" text="Home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -125,7 +125,7 @@
                         </ImageView>
                      </graphic>
                      <font>
-                        <Font name="Segoe UI" size="18.0" />
+                        <Font name="Segue UI" size="18.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -144,7 +144,7 @@
                   <padding>
                      <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                   </padding>
-                  <Button fx:id="Create" mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <Button mnemonicParsing="false" HBox.hgrow="NEVER">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/create.png" />
