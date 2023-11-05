@@ -11,6 +11,9 @@
 .tree-view .tree-cell {
     -fx-background-color: #f8f0dd;
 }
+.tree-view .tree-cell:selected{
+    -fx-background-color: #d3b090;
+}
 
 
 

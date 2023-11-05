@@ -135,7 +135,7 @@
                      </tooltip>
                   </Button>
                </AnchorPane>
-               <TreeView prefHeight="719.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" VBox.vgrow="ALWAYS" />
+               <TreeView fx:id="treeView" prefHeight="719.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" VBox.vgrow="ALWAYS" />
             </VBox>
          </AnchorPane>
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="752.0" prefWidth="724.0" style="-fx-background-color: #f8f0dd;">
@@ -212,7 +212,7 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="34.0">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <Image url="@../Images/SelectAll.png"/>
+                           <Image url="@../Images/SelectAll.png" />
                         </ImageView>
                      </graphic>
                      <tooltip>

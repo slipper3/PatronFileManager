@@ -44,6 +44,9 @@ public class Controller implements Initializable {
     @FXML
     public  TableColumn<TableViewItem, String> date;
 
+    @FXML
+    TreeView treeView;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
@@ -79,6 +82,21 @@ public class Controller implements Initializable {
             throw new RuntimeException(e);
         }
         tableView.setItems(fileList);
+
+
+
+        //Заготовка для дерева файлів
+        treeView.setOnMouseClicked(event -> {
+            System.out.println("Clcked");
+        });
+
+        File[] drivePath = File.listRoots();
+        TreeItem<String> rootItem = new TreeItem<>("This computer");
+        treeView.setRoot(rootItem);
+        for (File file : drivePath) {
+            TreeItem<String> drive = new TreeItem<>(file.toString());
+            rootItem.getChildren().add(drive);
+        }
     }
     public void switchToAnalytics(javafx.event.ActionEvent actionEvent) throws IOException {
         /*Функція перехіду з основної сцени в сцену з аналітикою*/
