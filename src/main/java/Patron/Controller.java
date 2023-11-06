@@ -32,6 +32,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
@@ -39,6 +40,8 @@ public class Controller implements Initializable {
     public Stage stage;
     public Scene scene;
     public static File fileDir;
+    public static Stack<File> previousFileDir = new Stack<>();
+    public static Stack<File> forwardFileDir = new Stack<>();
     @FXML
     public ListView listView;
     @FXML
@@ -54,10 +57,11 @@ public class Controller implements Initializable {
     @FXML
     TreeView treeView;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tableView.setOnMouseClicked(this::tableViewDraw);
         fileDir = new File("C:\\");
+        tableView.setOnMouseClicked(this::tableViewDraw);
         name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         size.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         date.setCellValueFactory(new PropertyValueFactory<>("modDate"));
@@ -100,6 +104,19 @@ public class Controller implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    public void BackClick(javafx.event.ActionEvent actionEvent){
+        if(previousFileDir.isEmpty()){return;}
+        forwardFileDir.push(fileDir);
+        fileDir = previousFileDir.pop();
+        tableViewDraw();
+    }
+    public void ForwardClick(javafx.event.ActionEvent actionEvent){
+        if(forwardFileDir.isEmpty()){return;}
+        previousFileDir.push(fileDir);
+        fileDir = forwardFileDir.pop();
+        tableViewDraw();
+    }
+    public void HomeClick(javafx.event.ActionEvent actionEvent){}
     /**Споміжні функції для виводу списку файлів*/
     public String calculateSize(File f){
         /*
