@@ -3,6 +3,8 @@ package Patron;
 import Moduls.TableViewItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +13,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.PickResult;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
@@ -23,71 +28,46 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
 public class Controller implements Initializable {
     public Stage stage;
     public Scene scene;
-    public Path DirPath;
+    public static File fileDir;
     @FXML
     public ListView listView;
     @FXML
     public TableView<TableViewItem> tableView;
     @FXML
-    public TableColumn<TableViewItem, String> name;
+    public TableColumn<TableViewItem, Button> name;
     @FXML
     public  TableColumn<TableViewItem, String> size;
     @FXML
     public  TableColumn<TableViewItem, String> date;
+    ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
 
     @FXML
     TreeView treeView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
-        DirPath = Path.of("C:\\Users");
-
-        /* Тут виводиться список папок певної директорії в об'єкт ListView
-         * Код успішно працює
-        try {
-            Files.walk(StartDirectory)
-                    .filter(path -> Files.isDirectory(path))
-                    .forEach(dir -> {
-                        listView.getItems().add(new HBox(new TextField(dir.getFileName().toString()), new Label(calculateSize(dir.toFile()))));
-                    });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-
-        /* А в цьому кусочку я намагаюсь вивести список файлфв у вигляді таблиці
-         * Переглянутий контент:
-         * TableView - https://www.youtube.com/watch?v=fnU1AlyuguE
-         * Files.walk - https://www.youtube.com/watch?v=JlibW-BJ6I4&t=362s
-         * ListView - https://www.youtube.com/watch?v=Pqfd4hoi5cc&t=74s
-         * Files. https://mkyong.com/java/java-files-walk-examples/ */
+        tableView.setOnMouseClicked(this::tableViewDraw);
+        fileDir = new File("C:\\");
         name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         size.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         date.setCellValueFactory(new PropertyValueFactory<>("modDate"));
-
-        try(Stream<Path> walk = Files.walk(DirPath,1)){
-            walk.forEach(path -> {
-                fileList.add(new TableViewItem(path.getFileName().toString(), calculateSize(path.toFile()), "date created"));
-            });
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        tableView.setItems(fileList);
+        tableViewDraw();
 
 
 
         //Заготовка для дерева файлів
         treeView.setOnMouseClicked(event -> {
-            System.out.println("Clcked");
+            System.out.println("Clicked");
         });
 
         File[] drivePath = File.listRoots();
@@ -97,6 +77,20 @@ public class Controller implements Initializable {
             TreeItem<String> drive = new TreeItem<>(file.toString());
             rootItem.getChildren().add(drive);
         }
+    }
+    public void tableViewDraw(MouseEvent event){
+        fileList.clear();
+        for (File file : Objects.requireNonNull(fileDir.listFiles())){
+            fileList.add(new TableViewItem(file, calculateSize(file), getDate(file)));
+        }
+        tableView.setItems(fileList);
+    }
+    public void tableViewDraw(){
+        fileList.clear();
+        for (File file : Objects.requireNonNull(fileDir.listFiles())){
+            fileList.add(new TableViewItem(file, calculateSize(file), getDate(file)));
+        }
+        tableView.setItems(fileList);
     }
     public void switchToAnalytics(javafx.event.ActionEvent actionEvent) throws IOException {
         /*Функція перехіду з основної сцени в сцену з аналітикою*/
@@ -148,6 +142,17 @@ public class Controller implements Initializable {
         else{
             long sizeInGb = sizeInByte/(1024*1024*1024); s = sizeInGb + "GB"; return s; //Якщо розмір більше 1гб
         }
+    }
+    public String getDate(File f){
+        String dateCreated;
+        try {
+            BasicFileAttributes attr = Files.readAttributes(f.toPath(), BasicFileAttributes.class);
+            FileTime fileTime = attr.creationTime();
+            dateCreated = fileTime.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return dateCreated;
     }
     public boolean IsDrive(File f){
         /* Перевіряємо отриманий файл на диск ;l
