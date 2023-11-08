@@ -3,8 +3,6 @@ package Patron;
 import Moduls.TableViewItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventTarget;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,16 +10,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.PickResult;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-import java.awt.image.BufferedImage;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +29,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
-import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
 public class Controller implements Initializable {
     public Stage stage;
@@ -52,21 +46,21 @@ public class Controller implements Initializable {
     public  TableColumn<TableViewItem, String> size;
     @FXML
     public  TableColumn<TableViewItem, String> date;
-    ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
+    private final ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
+    private final ObservableList<File> selectedFileList = FXCollections.observableArrayList();
 
     @FXML
     TreeView treeView;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fileDir = new File("C:\\");
-        tableView.setOnMouseClicked(this::tableViewDraw);
+
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        fileDir = new File("D:\\");
         name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         size.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         date.setCellValueFactory(new PropertyValueFactory<>("modDate"));
         tableViewDraw();
-
 
 
         //Заготовка для дерева файлів
@@ -82,13 +76,8 @@ public class Controller implements Initializable {
             rootItem.getChildren().add(drive);
         }
     }
-    public void tableViewDraw(MouseEvent event){
-        fileList.clear();
-        for (File file : Objects.requireNonNull(fileDir.listFiles())){
-            fileList.add(new TableViewItem(file, calculateSize(file), getDate(file)));
-        }
-        tableView.setItems(fileList);
-    }
+
+    /** */
     public void tableViewDraw(){
         fileList.clear();
         for (File file : Objects.requireNonNull(fileDir.listFiles())){
@@ -96,27 +85,87 @@ public class Controller implements Initializable {
         }
         tableView.setItems(fileList);
     }
-    public void switchToAnalytics(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void tableViewClicked(MouseEvent event) {
+        if(event.getButton().equals(MouseButton.PRIMARY)){
+            if (event.getClickCount() == 1){
+                selectedFileList.clear();
+                ObservableList<TableViewItem> items = tableView.getSelectionModel().getSelectedItems();
+                for(TableViewItem item : items){
+                    selectedFileList.add(item.getFile());
+                }
+            }
+            if(event.getClickCount() == 2){
+                File f = tableView.getSelectionModel().getSelectedItem().getFile();
+                if(f.isDirectory()) {
+                    Controller.previousFileDir.push(Controller.fileDir);
+                    Controller.fileDir = f;
+                    tableViewDraw();
+                }else {
+                    OpenFile(f);
+                }
+            }
+        }
+    }
+    private void OpenFile(File f){
+        if (!Desktop.isDesktopSupported()) {
+            System.out.println("Desktop is not supported");
+            return;
+        }
+
+        Desktop desktop = Desktop.getDesktop();
+        if (f.exists()) {
+            try {
+                desktop.open(f);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    /**Обробники подій для кнопок*/
+    public void switchToAnalytics(MouseEvent event) throws IOException {
         /*Функція перехіду з основної сцени в сцену з аналітикою*/
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Analytics.fxml")));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-    public void BackClick(javafx.event.ActionEvent actionEvent){
+    public void BackClick(MouseEvent event){
         if(previousFileDir.isEmpty()){return;}
         forwardFileDir.push(fileDir);
         fileDir = previousFileDir.pop();
         tableViewDraw();
     }
-    public void ForwardClick(javafx.event.ActionEvent actionEvent){
+    public void ForwardClick(MouseEvent event){
         if(forwardFileDir.isEmpty()){return;}
         previousFileDir.push(fileDir);
         fileDir = forwardFileDir.pop();
         tableViewDraw();
     }
-    public void HomeClick(javafx.event.ActionEvent actionEvent){}
+    public void DirUpClicked(MouseEvent event) {
+        if(IsDrive(fileDir)){return;}
+        previousFileDir.push(fileDir);
+        int lastSlash = fileDir.getPath().lastIndexOf('\\');
+        StringBuilder sb = new StringBuilder(fileDir.getPath());
+        for (int index = lastSlash+1; index < sb.toString().length();) { sb.deleteCharAt(index); }
+        fileDir = new File(sb.toString());
+        tableViewDraw();
+    }
+    public void ReloadClicked(MouseEvent event) { tableViewDraw(); }
+    public void SearchClicked(MouseEvent event) {}
+    public void HomeClick(MouseEvent event){}
+    public void CreateClick(MouseEvent event){}
+    public void PasteClick(MouseEvent event){}
+    public void CutClick(MouseEvent event){}
+    public void CopyClick(MouseEvent event){}
+    public void DeleteClick(MouseEvent event){
+        for (File f : selectedFileList){
+                f.delete();
+        }
+        selectedFileList.clear();
+        tableViewDraw();
+    }
+    public void SelectAllClick(MouseEvent event){ tableView.getSelectionModel().selectAll(); }
     /**Споміжні функції для виводу списку файлів*/
     public String calculateSize(File f){
         /*
@@ -184,30 +233,5 @@ public class Controller implements Initializable {
     public boolean IsFolder(File f){
         Path path = Path.of(f.getPath());
         return Files.isDirectory(path);
-    }
-    public Image getIconImageFX(File f) {
-        /*
-         * Метод для отримання системних іконок для дисків, папок, файлів
-         *
-         * Функція отримує деякий файл, робить запит
-         *      ImageIcon icon = (ImageIcon) FileSystemView.getFileSystemView().getSystemIcon("отриманий файл");
-         * Але цей метод повертає картинку 16х16
-         *
-         * Можна використовувати
-         *      Icon icon = new ImageIcon(ShellFolder.getShellFolder(new File(FILENAME)).getIcon(true));
-         * Що поверне картинку 16х16 при .getIcon і 32х32 при .getLargeIcon
-         *
-         *      java.awt.Image img = icon.getImage();
-         * icon.getImage() - повертає картинку з іконки, java.awt. - використовується для масштабування картинки
-         *
-         * Клас BufferedImage використовується для обробки та керування данними картинки
-         *
-         *  Image imgFx = toFXImage(bImg,null);
-         * Цей кусочок коду конвертує отриману картинку в javaFX картинку
-         */
-        ImageIcon icon = (ImageIcon) FileSystemView.getFileSystemView().getSystemIcon(f);
-        java.awt.Image img = icon.getImage();
-        BufferedImage bImg = (BufferedImage) img;
-        return toFXImage(bImg, null);
     }
 }

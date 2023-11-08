@@ -4,38 +4,41 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import Patron.Controller;
 
 public class TableViewItem {
     private final String fileSize;
     private final String modDate;
     private final HBox fileName;
+    private  final File file;
 
 
-    public TableViewItem(File name, String size, String date){
+    public TableViewItem(File f, String size, String date){
         /** Клас для об'єктів таблиці*/
-        this.fileName = setup(name);
+        this.fileName = setup(f);
         this.fileSize = size;
         this.modDate = date;
+        this.file = f;
     }
     private HBox setup(File f){
         Icon icon = FileSystemView.getFileSystemView().getSystemIcon(f);
         ImageView fileIcon = new ImageView(IconToImage(icon));
         Label fileLabel = new Label(f.getName());
         HBox hBox = new HBox(fileIcon, fileLabel);
-        hBox.setOnMouseClicked(event -> tableItemClicked(event, f));
         return hBox;
+    }
+    private Image IconToImage(Icon icon){
+        icon = new SafeIcon(icon);
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+        icon.paintIcon(new JPanel(), image.getGraphics(), 0, 0);
+        Image img = SwingFXUtils.toFXImage(image, null);
+        return img;
     }
 
     public String getFileSize() {
@@ -47,35 +50,7 @@ public class TableViewItem {
     public HBox getFileName() {
         return fileName;
     }
-    private Image IconToImage(Icon icon){
-        icon = new SafeIcon(icon);
-        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-        icon.paintIcon(new JPanel(), image.getGraphics(), 0, 0);
-        Image img = SwingFXUtils.toFXImage(image, null);
-        return img;
-    }
-    private void tableItemClicked(MouseEvent event, File f) {
-        if(event.getButton().equals(MouseButton.PRIMARY)){
-            if(event.getClickCount() == 2){
-                if(f.isDirectory()) {
-                    Controller.previousFileDir.push(Controller.fileDir);
-                    Controller.fileDir = f;
-                }else {
-                    if (!Desktop.isDesktopSupported()) {
-                        System.out.println("Desktop is not supported");
-                        return;
-                    }
-
-                    Desktop desktop = Desktop.getDesktop();
-                    if (f.exists()) {
-                        try {
-                            desktop.open(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-            }
-        }
+    public File getFile() {
+        return file;
     }
 }
