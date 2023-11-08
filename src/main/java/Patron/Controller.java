@@ -160,7 +160,7 @@ public class Controller implements Initializable {
     public void CopyClick(MouseEvent event){}
     public void DeleteClick(MouseEvent event){
         for (File f : selectedFileList){
-                f.delete();
+            Desktop.getDesktop().moveToTrash(f);
         }
         selectedFileList.clear();
         tableViewDraw();
