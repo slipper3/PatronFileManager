@@ -45,10 +45,8 @@ public class Utility {
 
 
                 double usedPer = (usedSpace / totalSpace) * 100;
-                System.out.println(Math.round(usedPer) + " %");
 
                 double remPer = (remSpace / totalSpace) * 100;
-                System.out.println(Math.round(remPer) + " %");
 
                 drive.setDblFreeSpace(remSpace);
                 drive.setDblTotalSpace(totalSpace);
