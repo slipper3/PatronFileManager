@@ -84,8 +84,13 @@
 #Date{
     -fx-alignment: CENTER;
 }
+.context-menu{
+    -fx-background-color: #f8f0dd;
 
-
+}
+.menu-item:focused {
+    -fx-background-color: #d3b090;
+}
 
 .button{
     -fx-background-color: #d3b090;

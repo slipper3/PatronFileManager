@@ -11,7 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -23,9 +26,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -48,6 +53,11 @@ public class Controller implements Initializable {
     public  TableColumn<TableViewItem, String> date;
     private final ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
     private final ObservableList<File> selectedFileList = FXCollections.observableArrayList();
+    private final ObservableList<File> copiedFileList = FXCollections.observableArrayList();
+    @FXML
+    public ContextMenu cm;
+    @FXML
+    public TextField textField;
 
     @FXML
     TreeView treeView;
@@ -76,14 +86,14 @@ public class Controller implements Initializable {
             rootItem.getChildren().add(drive);
         }
     }
-
-    /** */
+    /**Відображення списку файлів та обробник кліків*/
     public void tableViewDraw(){
         fileList.clear();
         for (File file : Objects.requireNonNull(fileDir.listFiles())){
             fileList.add(new TableViewItem(file, calculateSize(file), getDate(file)));
         }
         tableView.setItems(fileList);
+        textField.setText(fileDir.toString());
     }
     public void tableViewClicked(MouseEvent event) {
         if(event.getButton().equals(MouseButton.PRIMARY)){
@@ -111,7 +121,6 @@ public class Controller implements Initializable {
             System.out.println("Desktop is not supported");
             return;
         }
-
         Desktop desktop = Desktop.getDesktop();
         if (f.exists()) {
             try {
@@ -151,23 +160,147 @@ public class Controller implements Initializable {
         fileDir = new File(sb.toString());
         tableViewDraw();
     }
+    public void TextFieldEvent(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            CharSequence ch = textField.getCharacters();
+            File f = new File(ch.toString());
+            if (f.exists()) {
+                if (f.isDirectory()) {
+                    previousFileDir.push(fileDir);
+                    fileDir = f;
+                    tableViewDraw();
+                } else {
+                    OpenFile(f);
+                }
+            }
+        }
+    }
     public void ReloadClicked(MouseEvent event) { tableViewDraw(); }
     public void SearchClicked(MouseEvent event) {}
     public void HomeClick(MouseEvent event){}
-    public void CreateClick(MouseEvent event){}
-    public void PasteClick(MouseEvent event){}
-    public void CutClick(MouseEvent event){}
-    public void CopyClick(MouseEvent event){}
-    public void DeleteClick(MouseEvent event){
-        for (File f : selectedFileList){
+    public void CreateClick(MouseEvent event){
+
+    }
+    public void CreateFolder(javafx.event.ActionEvent event){
+        TextInputDialog dialog = new TextInputDialog("New folder");
+        dialog.setTitle("Створеня папки");
+        dialog.setHeaderText("");
+        dialog.setContentText("Введіть назву папки:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(s -> {
+            File theDir = new File(fileDir.getPath()+"\\"+result.get());
+            if (!theDir.exists()) {
+                theDir.mkdirs();
+            }
+            else{
+                Alert warning = setAlert("WARNING", "WARNING","Така папка вжеіснує");
+                warning.showAndWait();
+            }
+            tableViewDraw();
+        });
+    }
+    public void CreateFile(javafx.event.ActionEvent event){
+        TextInputDialog dialog = new TextInputDialog("New file.txt");
+        dialog.setTitle("Створеня файлу");
+        dialog.setHeaderText("");
+        dialog.setContentText("Введіть назву файла та розширення (назва.txt):");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(s -> {
+            File file = new File(fileDir.getPath()+"\\"+result.get());
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                tableViewDraw();
+            }else{
+                Alert warning = setAlert("WARNING", "WARNING","Такий файл уже існує");
+                warning.showAndWait();
+            }
+        });
+    }
+    public void PasteClick(MouseEvent event) throws IOException {
+        for(File f : copiedFileList){
+            if(f.isDirectory()){
+                System.out.println("Поки не можу копіюввати папки");
+            }
+            else {
+                String copyPath = fileDir.getPath() + "\\" + f.getName();
+                String originPath = f.getPath();
+                Files.copy(Path.of(originPath), Path.of(copyPath), StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+        tableViewDraw();
+    }
+    public void CutClick(MouseEvent event){
+        copiedFileList.clear();
+        copiedFileList.addAll(selectedFileList);
+        for (File f : selectedFileList) {
             Desktop.getDesktop().moveToTrash(f);
         }
         selectedFileList.clear();
         tableViewDraw();
     }
-    public void SelectAllClick(MouseEvent event){ tableView.getSelectionModel().selectAll(); }
-    /**Споміжні функції для виводу списку файлів*/
-    public String calculateSize(File f){
+    public void CopyClick(MouseEvent event){
+        copiedFileList.clear();
+        copiedFileList.addAll(selectedFileList);
+    }
+    public void DeleteClick(MouseEvent event){
+        Alert alert = setAlert("CONFIRMATION", "Підтвердження видалення", "Перемістити в корзину?");
+        ButtonType buttonYes = new ButtonType("Так");
+        ButtonType buttonCancel = new ButtonType("Відмінити", ButtonBar.ButtonData.CANCEL_CLOSE);
+        assert alert != null;
+        alert.getButtonTypes().setAll(buttonYes, buttonCancel);
+        alert.showAndWait();
+
+        if(alert.getResult() == buttonYes) {
+            for (File f : selectedFileList) {
+                Desktop.getDesktop().moveToTrash(f);
+            }
+            selectedFileList.clear();
+            tableViewDraw();
+        }
+    }
+    public void SelectAllClick(MouseEvent event){
+        ObservableList<TableViewItem> items = tableView.getSelectionModel().getSelectedItems();
+        for(TableViewItem item : items){
+            selectedFileList.add(item.getFile());
+        }
+    }
+    /**Споміжні функції*/
+    private Alert setAlert(String type, String title, String header){
+        switch (type) {
+            case "CONFIRMATION" -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                return alert;
+            }
+            case "ERROR" -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                return alert;
+            }
+            case "WARNING" -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                return alert;
+            }
+            case "INFORMATION" -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                return alert;
+            }
+        }
+        return null;
+    }
+    private String calculateSize(File f){
         /*
          * Функція розрахунку ваги файлу
          */
@@ -209,7 +342,7 @@ public class Controller implements Initializable {
             long sizeInGb = sizeInByte/(1024*1024*1024); s = sizeInGb + "GB"; return s; //Якщо розмір більше 1гб
         }
     }
-    public String getDate(File f){
+    private String getDate(File f){
         String dateCreated;
         try {
             BasicFileAttributes attr = Files.readAttributes(f.toPath(), BasicFileAttributes.class);
@@ -220,7 +353,7 @@ public class Controller implements Initializable {
         }
         return dateCreated;
     }
-    public boolean IsDrive(File f){
+    private boolean IsDrive(File f){
         /* Перевіряємо отриманий файл на диск ;l
          * systemRoots присвоюємо ...
          * в циклі перевіряємо чи відповідає ...*/
@@ -230,7 +363,7 @@ public class Controller implements Initializable {
         }
         return false;
     }
-    public boolean IsFolder(File f){
+    private boolean IsFolder(File f){
         Path path = Path.of(f.getPath());
         return Files.isDirectory(path);
     }
