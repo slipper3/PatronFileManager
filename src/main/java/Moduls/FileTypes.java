@@ -29,10 +29,7 @@ public class FileTypes {
         documents.add("tif");
         documents.add("tiff");
         documents.add("bmp");
-        documents.add("jpeg");
-        documents.add("jpg");
         documents.add("gif");
-        documents.add("png");
         documents.add("eps");
         documents.add("cr2");
         documents.add("nef");
@@ -42,6 +39,7 @@ public class FileTypes {
         ArrayList<String> images = new ArrayList<>();
         images.add("png");
         images.add("jpg");
+        images.add("jpeg");
 
         ArrayList<String> music = new ArrayList<>();
         music.add("mp3");
