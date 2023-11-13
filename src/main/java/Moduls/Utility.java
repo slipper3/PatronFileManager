@@ -82,7 +82,7 @@ public class Utility {
                     for (String name : filetypes.hashtable.get(fileType)) {
                         if (Objects.equals(extension, name)) {
                             TableViewItem item = new TableViewItem(f, calculateSize(f), getDate(f));
-                            System.out.println("Working!");
+                            System.out.println("Element has added!");
                             fileList.add(item);
                             break;
                         }

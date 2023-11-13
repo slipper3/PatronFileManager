@@ -19,7 +19,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="300.0" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../styles/analytic.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Patron.AnalyticsControl">
    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <HBox prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #d3b090;">
+      <HBox prefHeight="35.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #d3b090;">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -39,46 +39,24 @@
                <Insets />
             </HBox.margin>
          </Pane>
-         <AnchorPane prefHeight="35.0" prefWidth="35.0">
-            <Button fx:id="SwitchScene" mnemonicParsing="false" onAction="#switchToMainScene" prefWidth="25.0">
-               <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+         <Button fx:id="Back" mnemonicParsing="false" onAction="#switchToMainScene" prefHeight="24.0" prefWidth="24.0">
+            <graphic>
+               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
                      <Image url="@../Images/Back.png" />
-                  </ImageView>
-               </graphic>
-               <tooltip>
-                  <Tooltip text="Повернутись до основного вікна" />
-               </tooltip>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Button>
-            <Button fx:id="Back" mnemonicParsing="false" onAction="#back" prefWidth="25.0" visible="false">
-               <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../Images/Back.png" />
-                  </ImageView>
-               </graphic>
-               <tooltip>
-                  <Tooltip text="Повернутись до аналітики" />
-               </tooltip>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-            </Button>
-         </AnchorPane>
+                  </image>
+               </ImageView>
+            </graphic>
+            <tooltip>
+               <Tooltip text="Назад" />
+            </tooltip>
+         </Button>
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
       </HBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="ALWAYS">
-         <AnchorPane prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <AnchorPane fx:id="analyticTablePane" prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <TableView fx:id="AnalyticTable" onMouseClicked="#tableViewClicked" prefHeight="563.0" prefWidth="600.0" stylesheets="@../styles/analytic.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
                   <TableColumn fx:id="nameAnalytic" minWidth="60.0" prefWidth="295.0" text="Name" />

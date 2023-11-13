@@ -1,6 +1,5 @@
 package Patron;
 
-import Moduls.FileTypes;
 import Moduls.TableViewItem;
 import Moduls.Drive;
 
@@ -39,6 +38,8 @@ public class AnalyticsControl implements Initializable {
     private ObservableList<PieChart.Data> pieChartData;
     private ObservableList<TableViewItem> tableItems = FXCollections.observableArrayList();
     private Utility utility;
+    private Button actionButton;
+    private Thread thread = new Thread();
     @FXML
     public Button imageButton;
     @FXML
@@ -66,8 +67,6 @@ public class AnalyticsControl implements Initializable {
     @FXML
     public VBox AnalyticVBox;
     @FXML
-    public Button SwitchScene;
-    @FXML
     public Button Back;
     @FXML
     public Label lblUsed;
@@ -75,22 +74,26 @@ public class AnalyticsControl implements Initializable {
     public Label lblFree;
 
 
-    public void switchToMainScene(javafx.event.ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ManagerUi.fxml")));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 
-    public void back() {
-        SwitchScene.setVisible(true);
-        AnalyticVBox.setVisible(true);
-        Back.setVisible(false);
-        AnalyticTable.setVisible(false);
-        AnalyticTable.getItems().clear();
-        tableItems.clear();
-        utility.clearFileList();
+    public void switchToMainScene(javafx.event.ActionEvent actionEvent) throws IOException {
+        if (thread.isAlive()){
+            thread.stop();
+            driveCombo.setDisable(false);
+            System.out.println("Thread has stopped!");
+        }
+        if (AnalyticTable.isVisible()){
+            AnalyticTable.setVisible(false);
+            AnalyticVBox.setVisible(true);
+            utility.clearFileList();
+            AnalyticTable.getItems().clear();
+        } else {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ManagerUi.fxml")));
+            stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
     }
 
     @Override
@@ -105,6 +108,12 @@ public class AnalyticsControl implements Initializable {
     }
 
     public void loadChartData() {
+        if (AnalyticTable.isVisible()){
+            ActionEvent event = new ActionEvent(actionButton, null);
+            utility.clearFileList();
+            AnalyticTable.getItems().clear();
+            drawFiles(event);
+        }
         pieChartData = FXCollections.observableArrayList();
         Drive drive = driveCombo.getSelectionModel().getSelectedItem();
         PieChart.Data usedData = new PieChart.Data("Використане місце " + drive.getUsedPer() + " %", drive.getDblUsedSpace());
@@ -117,84 +126,87 @@ public class AnalyticsControl implements Initializable {
     }
 
     public void drawFiles(ActionEvent event) {
-        Button actionButton = (Button) event.getSource();
-        if (driveCombo.getSelectionModel().getSelectedItem() != null) {
+        actionButton = (Button) event.getSource();
+
+        if (driveCombo.getSelectionModel().getSelectedItem() != null && !thread.isAlive()) {
+            driveCombo.setDisable(true);
 
             if(actionButton.equals(imageButton)){
-                Thread thread = new Thread(() -> {
+                thread = new Thread(() -> {
+                    System.out.println("Image button start");
                     tableItems = utility.getFiles(
                             driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Images");
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
-                        Back.setVisible(true);
                         AnalyticTable.setVisible(true);
-                        SwitchScene.setVisible(false);
                         AnalyticVBox.setVisible(false);
+                        driveCombo.setDisable(false);
                     });
                 });
                 thread.start();
             } else if (actionButton.equals(documentButton)){
-                Thread thread = new Thread(() -> {
+                thread = new Thread(() -> {
+                    System.out.println("Document button start");
                     tableItems = utility.getFiles(
                             driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Documents");
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
-                        Back.setVisible(true);
                         AnalyticTable.setVisible(true);
-                        SwitchScene.setVisible(false);
                         AnalyticVBox.setVisible(false);
+                        driveCombo.setDisable(false);
+
                     });
                 });
                 thread.start();
             } else if (actionButton.equals(videoButton)) {
-                Thread thread = new Thread(() -> {
+                thread = new Thread(() -> {
+                    System.out.println("Video button start");
                     tableItems = utility.getFiles(
                             driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Videos");
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
-                        Back.setVisible(true);
                         AnalyticTable.setVisible(true);
-                        SwitchScene.setVisible(false);
                         AnalyticVBox.setVisible(false);
+                        driveCombo.setDisable(false);
                     });
                 });
                 thread.start();
             } else if (actionButton.equals(archiveButton)){
-                Thread thread = new Thread(() -> {
+                thread = new Thread(() -> {
+                    System.out.println("Archives button start");
                     tableItems = utility.getFiles(
                             driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Archives");
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
-                        Back.setVisible(true);
                         AnalyticTable.setVisible(true);
-                        SwitchScene.setVisible(false);
                         AnalyticVBox.setVisible(false);
+                        driveCombo.setDisable(false);
                     });
                 });
                 thread.start();
             } else if (actionButton.equals(appButton)){
-                Thread thread = new Thread(() -> {
+                thread = new Thread(() -> {
+                    System.out.println("App button start");
                     tableItems = utility.getFiles(
                             driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "App");
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
-                        Back.setVisible(true);
                         AnalyticTable.setVisible(true);
-                        SwitchScene.setVisible(false);
                         AnalyticVBox.setVisible(false);
+                        driveCombo.setDisable(false);
                     });
                 });
                 thread.start();
             } else if (actionButton.equals(musicButton)){
-                Thread thread = new Thread(() -> {
+                thread = new Thread(() -> {
+                    System.out.println("Music button start");
                     tableItems = utility.getFiles(
                             driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Music");
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
-                        Back.setVisible(true);
                         AnalyticTable.setVisible(true);
-                        SwitchScene.setVisible(false);
                         AnalyticVBox.setVisible(false);
+                        driveCombo.setDisable(false);
                     });
                 });
                 thread.start();
@@ -208,6 +220,7 @@ public class AnalyticsControl implements Initializable {
             alert.show();
             driveCombo.requestFocus();
         }
+
         System.out.println("Done!");
     }
 
