@@ -2,8 +2,8 @@ package Patron;
 
 import Moduls.TableViewItem;
 import Moduls.Drive;
-
 import Moduls.Utility;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -72,6 +72,8 @@ public class AnalyticsControl implements Initializable {
     public Label lblUsed;
     @FXML
     public Label lblFree;
+    @FXML
+    public ProgressBar progressBar;
 
 
 
@@ -79,6 +81,8 @@ public class AnalyticsControl implements Initializable {
         if (thread.isAlive()){
             thread.stop();
             driveCombo.setDisable(false);
+            progressBar.setVisible(false);
+            progressBar.setProgress(0);
             System.out.println("Thread has stopped!");
         }
         if (AnalyticTable.isVisible()){
@@ -98,6 +102,7 @@ public class AnalyticsControl implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        progressBar.setVisible(false);
         utility = new Utility();
         AnalyticTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         nameAnalytic.setCellValueFactory(new PropertyValueFactory<>("fileName"));
@@ -130,17 +135,20 @@ public class AnalyticsControl implements Initializable {
 
         if (driveCombo.getSelectionModel().getSelectedItem() != null && !thread.isAlive()) {
             driveCombo.setDisable(true);
+            progressBar.setVisible(true);
 
             if(actionButton.equals(imageButton)){
                 thread = new Thread(() -> {
                     System.out.println("Image button start");
                     tableItems = utility.getFiles(
-                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Images");
+                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Images", progressBar);
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
                         AnalyticTable.setVisible(true);
                         AnalyticVBox.setVisible(false);
                         driveCombo.setDisable(false);
+                        progressBar.setVisible(false);
+                        progressBar.setProgress(0);
                     });
                 });
                 thread.start();
@@ -148,13 +156,14 @@ public class AnalyticsControl implements Initializable {
                 thread = new Thread(() -> {
                     System.out.println("Document button start");
                     tableItems = utility.getFiles(
-                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Documents");
+                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Documents", progressBar);
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
                         AnalyticTable.setVisible(true);
                         AnalyticVBox.setVisible(false);
                         driveCombo.setDisable(false);
-
+                        progressBar.setVisible(false);
+                        progressBar.setProgress(0);
                     });
                 });
                 thread.start();
@@ -162,12 +171,14 @@ public class AnalyticsControl implements Initializable {
                 thread = new Thread(() -> {
                     System.out.println("Video button start");
                     tableItems = utility.getFiles(
-                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Videos");
+                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Videos", progressBar);
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
                         AnalyticTable.setVisible(true);
                         AnalyticVBox.setVisible(false);
                         driveCombo.setDisable(false);
+                        progressBar.setVisible(false);
+                        progressBar.setProgress(0);
                     });
                 });
                 thread.start();
@@ -175,12 +186,14 @@ public class AnalyticsControl implements Initializable {
                 thread = new Thread(() -> {
                     System.out.println("Archives button start");
                     tableItems = utility.getFiles(
-                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Archives");
+                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Archives", progressBar);
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
                         AnalyticTable.setVisible(true);
                         AnalyticVBox.setVisible(false);
                         driveCombo.setDisable(false);
+                        progressBar.setVisible(false);
+                        progressBar.setProgress(0);
                     });
                 });
                 thread.start();
@@ -188,12 +201,14 @@ public class AnalyticsControl implements Initializable {
                 thread = new Thread(() -> {
                     System.out.println("App button start");
                     tableItems = utility.getFiles(
-                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "App");
+                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "App", progressBar);
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
                         AnalyticTable.setVisible(true);
                         AnalyticVBox.setVisible(false);
                         driveCombo.setDisable(false);
+                        progressBar.setVisible(false);
+                        progressBar.setProgress(0);
                     });
                 });
                 thread.start();
@@ -201,19 +216,21 @@ public class AnalyticsControl implements Initializable {
                 thread = new Thread(() -> {
                     System.out.println("Music button start");
                     tableItems = utility.getFiles(
-                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Music");
+                            driveCombo.getSelectionModel().getSelectedItem().getFile().listFiles(), 0, "Music", progressBar);
                     Platform.runLater(() -> {
                         AnalyticTable.setItems(tableItems);
                         AnalyticTable.setVisible(true);
                         AnalyticVBox.setVisible(false);
                         driveCombo.setDisable(false);
+                        progressBar.setVisible(false);
+                        progressBar.setProgress(0);
                     });
                 });
                 thread.start();
             }
 
 
-        } else {
+        } else if (driveCombo.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Mandatory");
             alert.setContentText("Please select drive");

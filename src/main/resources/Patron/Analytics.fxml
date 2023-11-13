@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
@@ -19,7 +20,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="300.0" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../styles/analytic.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Patron.AnalyticsControl">
    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <HBox prefHeight="35.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #d3b090;">
+      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #d3b090;">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -34,6 +35,11 @@
                <Tooltip text="Оберіть накопичувач" />
             </tooltip>
          </ComboBox>
+         <ProgressBar fx:id="progressBar" prefHeight="24.0" prefWidth="200.0" progress="0.0" style="-fx-background-color: #d3b090; -fx-accent: #d3b090; -fx-border-color: #d3b090;">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </ProgressBar>
          <Pane HBox.hgrow="ALWAYS">
             <HBox.margin>
                <Insets />
@@ -42,9 +48,7 @@
          <Button fx:id="Back" mnemonicParsing="false" onAction="#switchToMainScene" prefHeight="24.0" prefWidth="24.0">
             <graphic>
                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../Images/Back.png" />
-                  </image>
+                  <Image url="@../Images/Back.png" />
                </ImageView>
             </graphic>
             <tooltip>
@@ -56,7 +60,7 @@
          </padding>
       </HBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="ALWAYS">
-         <AnchorPane fx:id="analyticTablePane" prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <AnchorPane prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <TableView fx:id="AnalyticTable" onMouseClicked="#tableViewClicked" prefHeight="563.0" prefWidth="600.0" stylesheets="@../styles/analytic.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
                   <TableColumn fx:id="nameAnalytic" minWidth="60.0" prefWidth="295.0" text="Name" />

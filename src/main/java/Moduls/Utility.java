@@ -2,11 +2,11 @@ package Moduls;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ProgressBar;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectStreamClass;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,8 +29,8 @@ public class Utility {
     }
 
     public ArrayList<Drive> getAllDrives() {
-        ArrayList<Drive> drives = new ArrayList<Drive>();
-        FileSystemView fsv = FileSystemView.getFileSystemView();
+        ArrayList<Drive> drives = new ArrayList<>();
+        //FileSystemView fsv = FileSystemView.getFileSystemView();
 
         File[] drivesList = File.listRoots();
         if (drivesList != null) {
@@ -72,24 +72,30 @@ public class Utility {
         return drives;
     }
 
-    public ObservableList<TableViewItem> getFiles(File[] files, int level, String fileType){
+    public ObservableList<TableViewItem> getFiles(File[] files, int level, String fileType, ProgressBar progressBar){
 
         if (files != null) {
-            for (File f : files) {
-                if (f.isFile()) {
-                    String extension = getExtensionByStringHandling(f.getName());
+            for (int i = 0; i < files.length; i++) {
+
+                if (files[i].isFile()) {
+                    String extension = getExtensionByStringHandling(files[i].getName());
                     FileTypes filetypes = new FileTypes();
                     for (String name : filetypes.hashtable.get(fileType)) {
                         if (Objects.equals(extension, name)) {
-                            TableViewItem item = new TableViewItem(f, calculateSize(f), getDate(f));
+                            TableViewItem item = new TableViewItem(files[i], calculateSize(files[i]), getDate(files[i]));
                             System.out.println("Element has added!");
                             fileList.add(item);
                             break;
                         }
                     }
-                } else if (f.isDirectory()) {
-                    getFiles(f.listFiles(), level + 1, fileType);
+                } else if (files[i].isDirectory()) {
+                    getFiles(files[i].listFiles(), level + 1, fileType, progressBar);
                 }
+
+                if (level == 0){
+                    progressBar.setProgress(((double)1/files.length)*(i+1));
+                }
+
             }
         }
 
