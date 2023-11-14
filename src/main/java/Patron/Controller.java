@@ -7,6 +7,7 @@ import Moduls.TreeCell;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,9 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,7 +44,8 @@ import java.util.stream.Stream;
 
 import static Moduls.myUtils.*;
 
-//import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileUtils;
+
 
 public class Controller implements Initializable {
     @FXML
@@ -65,6 +70,7 @@ public class Controller implements Initializable {
     private final ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
     private final ObservableList<File> selectedFileList = FXCollections.observableArrayList();
     private String sortType = "none";
+    private boolean isCut = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -160,21 +166,6 @@ public class Controller implements Initializable {
             }
         }
     }
-    private void OpenFile(File f){
-        if (!Desktop.isDesktopSupported()) {
-            System.out.println("Desktop is not supported");
-            return;
-        }
-        Desktop desktop = Desktop.getDesktop();
-        if (f.exists()) {
-            try {
-                desktop.open(f);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     /**Обробники подій для кнопок*/
     public void switchToAnalytics(MouseEvent event) throws IOException {
         /*Функція перехіду з основної сцени в сцену з аналітикою*/
@@ -263,25 +254,36 @@ public class Controller implements Initializable {
             }
         });
     }
-    public void PasteClick(MouseEvent event) throws IOException {
-        PasteFileList(pasteFilesFromClipboard(), fileDir.toPath());
+    public void PasteClick(MouseEvent event) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        try {
+            List<File> list = (List<File>) clipboard.getData(DataFlavor.javaFileListFlavor);
+            PasteFileList(list);
+        } catch (UnsupportedFlavorException | IOException e) {
+            throw new RuntimeException(e);
+        }
         tableViewDraw(sortType);
     }
-    public void PasteFileList(List<File> fileList, Path newPath) throws IOException {
+    public void PasteFileList(List<File> files) {
         File destination = fileDir;
-        for(File file : fileList){
-            //FileUtils.copyFileToDirectory(file, destination);
+        try {
+            for(File f : files) {
+                if(f.isDirectory()){ FileUtils.copyDirectoryToDirectory(f, destination); }
+                else { FileUtils.copyFileToDirectory(f, destination); }
+                if(isCut){Desktop.getDesktop().moveToTrash(f);}
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        tableViewDraw(sortType);
     }
     public void CutClick(MouseEvent event){
         List<File> copyFileList = new ArrayList<>(selectedFileList);
         copyFilesToClipboard(copyFileList);
-        for (File f : selectedFileList) {
-            Desktop.getDesktop().moveToTrash(f);
-        }
-        tableViewDraw(sortType);
+        isCut = true;
     }
     public void CopyClick(MouseEvent event){
+        isCut = false;
         List<File> copyFileList = new ArrayList<>(selectedFileList);
         copyFilesToClipboard(copyFileList);
     }
@@ -320,17 +322,6 @@ public class Controller implements Initializable {
             List<Path> foundFiles = findFilesByName(Path.of(fileDir.getPath()), request);
             foundFilesDraw(foundFiles, request);
         }
-    }
-    public List<Path> findFilesByName(Path startDir, String fileName) throws IOException {
-        List<Path> result;
-        try (Stream<Path> walk = Files.walk(startDir)) {
-            result = walk
-                    .filter(Files::isReadable)      // read permission
-                    .filter(Files::isRegularFile)   // is a file
-                    .filter(p -> p.getFileName().toString().contains(fileName))
-                    .collect(Collectors.toList());
-        }
-        return result;
     }
     public void foundFilesDraw(List<Path> foundedFilesList, String request){
         fileList.clear();

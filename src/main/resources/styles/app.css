@@ -75,6 +75,7 @@
 .table-row-cell {
     -fx-table-cell-border-color: #d3b090;
 }
+
 #Name{
     -fx-alignment: CENTER-LEFT;
 }
@@ -111,4 +112,8 @@
 }
 .menu-button > .arrow-button > .arrow {
     -fx-padding: 0;
+}
+
+.imageview{
+    -fx-background-color: transparent;
 }

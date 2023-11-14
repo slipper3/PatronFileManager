@@ -21,6 +21,8 @@ import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class myUtils {
     public myUtils(){}
@@ -46,7 +48,7 @@ public class myUtils {
     }
     public static Image IconToImage(Icon icon){
         icon = new SafeIcon(icon);
-        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         icon.paintIcon(new JPanel(), image.getGraphics(), 0, 0);
         Image img = SwingFXUtils.toFXImage(image, null);
         return img;
@@ -229,4 +231,30 @@ public class myUtils {
         Path path = Path.of(f.getPath());
         return Files.isDirectory(path);
     }
+    public static void OpenFile(File f){
+        if (!Desktop.isDesktopSupported()) {
+            System.out.println("Desktop is not supported");
+            return;
+        }
+        Desktop desktop = Desktop.getDesktop();
+        if (f.exists()) {
+            try {
+                desktop.open(f);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public static List<Path> findFilesByName(Path startDir, String fileName) throws IOException {
+        List<Path> result;
+        try (Stream<Path> walk = Files.walk(startDir)) {
+            result = walk
+                    .filter(Files::isReadable)      // read permission
+                    .filter(Files::isRegularFile)   // is a file
+                    .filter(p -> p.getFileName().toString().contains(fileName))
+                    .collect(Collectors.toList());
+        }
+        return result;
+    }
+
 }
