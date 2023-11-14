@@ -45,7 +45,6 @@ public class Utility {
 
                 totalGB = totalSpace / 1073741824.0;
 
-                drive.setTotalSpace(String.format("%.2f", totalGB) + " GB");
 
                 usedGB = usedSpace / 1073741824.0;
 
@@ -62,7 +61,6 @@ public class Utility {
                 double remPer = (remSpace / totalSpace) * 100;
 
                 drive.setDblFreeSpace(remSpace);
-                drive.setDblTotalSpace(totalSpace);
                 drive.setDblUsedSpace(usedSpace);
                 drive.setPer(Math.round(usedPer));
                 drive.setRemPer(Math.round(remPer));

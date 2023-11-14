@@ -7,19 +7,13 @@ public class Drive {
 	private File file;
 	private double usedPer;
 	private double remPer;
-	private String totalSpace;
 	private String usedSpace;
 	private String freeSpace;
-	private double dblTotalSpace;
 	private double dblUsedSpace;
 	private double dblFreeSpace;
 
 	public double getUsedPer() {
 		return usedPer;
-	}
-
-	public void setDblTotalSpace(double dblTotalSpace) {
-		this.dblTotalSpace = dblTotalSpace;
 	}
 
 	public double getDblUsedSpace() {
@@ -44,10 +38,6 @@ public class Drive {
 
 	public void setFreeSpace(String freeSpace) {
 		this.freeSpace = freeSpace;
-	}
-
-	public void setTotalSpace(String totalSpace) {
-		this.totalSpace = totalSpace;
 	}
 
 	public String getUsedSpace() {
