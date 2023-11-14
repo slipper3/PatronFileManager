@@ -7,6 +7,7 @@ import Moduls.TreeCell;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,19 +30,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Stack;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static Moduls.myUtils.*;
+
+//import org.apache.commons.io.FileUtils;
 
 public class Controller implements Initializable {
-    public Stage stage;
-    public Scene scene;
-    public static File fileDir;
-    public static Stack<File> previousFileDir = new Stack<>();
-    public static Stack<File> forwardFileDir = new Stack<>();
     @FXML
     public TableView<TableViewItem> tableView;
     @FXML
@@ -50,25 +51,29 @@ public class Controller implements Initializable {
     public TableColumn<TableViewItem, String> size;
     @FXML
     public TableColumn<TableViewItem, String> date;
-    private final ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
-    private final ObservableList<File> selectedFileList = FXCollections.observableArrayList();
-    private final ObservableList<File> copiedFileList = FXCollections.observableArrayList();
-    @FXML
-    public ContextMenu cm;
     @FXML
     public TextField textField;
     @FXML
     public TreeView<TreeViewItem> treeView;
+    @FXML
+    public TextField searchField;
+    public Stage stage;
+    public Scene scene;
+    public static File fileDir;
+    public static Stack<File> previousFileDir = new Stack<>();
+    public static Stack<File> forwardFileDir = new Stack<>();
+    private final ObservableList<TableViewItem> fileList = FXCollections.observableArrayList();
+    private final ObservableList<File> selectedFileList = FXCollections.observableArrayList();
+    private String sortType = "none";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         fileDir = new File("D:\\");
         name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         size.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         date.setCellValueFactory(new PropertyValueFactory<>("modDate"));
-        tableViewDraw();
+        tableViewDraw(sortType);
 
         // Створюємо кореневий елемент TreeView
         TreeItem<TreeViewItem> rootItem = new TreeItem<>(new TreeViewItem(new File("This PC")));
@@ -84,9 +89,8 @@ public class Controller implements Initializable {
         treeView.setRoot(rootItem);
         // Встановлюємо фабрику для відображення елементів TreeView
         treeView.setCellFactory(param -> new TreeCell());
-
     }
-
+    /**Популізація дерева файлів*/
     public void TreeViewClicked(MouseEvent event) {
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1){
             TreeItem<TreeViewItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
@@ -99,24 +103,46 @@ public class Controller implements Initializable {
             if (selectedItem != null && selectedItem.getValue().getFile().isDirectory()) {
                 previousFileDir.push(fileDir);
                 fileDir = treeView.getSelectionModel().getSelectedItem().getValue().getFile();
-                tableViewDraw();
+                tableViewDraw(sortType);
             }
 
         }
     }
     /**Відображення списку файлів та обробник кліків*/
-    public void tableViewDraw(){
+    public void tableViewDraw(String sortType) {
         fileList.clear();
-        for (File file : Objects.requireNonNull(fileDir.listFiles())){
-            fileList.add(new TableViewItem(file, myUtils.calculateSize(file), myUtils.getDate(file)));
+        File[] files = fileDir.listFiles();
+        switch (sortType){
+            case "none":
+                //System.out.println("none");
+                break;
+            case "name":
+                Arrays.sort(Objects.requireNonNull(files), Comparator.comparing(File::getName));
+                break;
+            case "creation-date":
+                Arrays.sort(Objects.requireNonNull(files), Comparator.comparingLong(myUtils::getFileCreationEpoch));
+                break;
+            case "modify-date":
+                Arrays.sort(Objects.requireNonNull(files), Comparator.comparing(File::lastModified));
+                break;
+            case "size":
+                Arrays.sort(Objects.requireNonNull(files), Comparator.comparingLong(myUtils::calculateSizeInt));
+                Collections.reverse(Arrays.asList(files));
+                break;
+        }
+        for(File file : Objects.requireNonNull(files)){
+            if (file.isDirectory()){ fileList.add(CreateTableViewItem(file)); }
+        }
+        for(File file : files){
+            if (!file.isDirectory()){ fileList.add(CreateTableViewItem(file)); }
         }
         tableView.setItems(fileList);
         textField.setText(fileDir.toString());
     }
     public void tableViewClicked(MouseEvent event) {
+        selectedFileList.clear();
         if(event.getButton().equals(MouseButton.PRIMARY)){
             if (event.getClickCount() == 1){
-                selectedFileList.clear();
                 ObservableList<TableViewItem> items = tableView.getSelectionModel().getSelectedItems();
                 for(TableViewItem item : items){
                     selectedFileList.add(item.getFile());
@@ -127,7 +153,7 @@ public class Controller implements Initializable {
                 if(f.isDirectory()) {
                     Controller.previousFileDir.push(Controller.fileDir);
                     Controller.fileDir = f;
-                    tableViewDraw();
+                    tableViewDraw(sortType);
                 }else {
                     OpenFile(f);
                 }
@@ -148,6 +174,7 @@ public class Controller implements Initializable {
             }
         }
     }
+
     /**Обробники подій для кнопок*/
     public void switchToAnalytics(MouseEvent event) throws IOException {
         /*Функція перехіду з основної сцени в сцену з аналітикою*/
@@ -161,13 +188,13 @@ public class Controller implements Initializable {
         if(previousFileDir.isEmpty()){return;}
         forwardFileDir.push(fileDir);
         fileDir = previousFileDir.pop();
-        tableViewDraw();
+        tableViewDraw(sortType);
     }
     public void ForwardClick(MouseEvent event){
         if(forwardFileDir.isEmpty()){return;}
         previousFileDir.push(fileDir);
         fileDir = forwardFileDir.pop();
-        tableViewDraw();
+        tableViewDraw(sortType);
     }
     public void DirUpClicked(MouseEvent event) {
         if(myUtils.IsDrive(fileDir)){return;}
@@ -176,7 +203,7 @@ public class Controller implements Initializable {
         StringBuilder sb = new StringBuilder(fileDir.getPath());
         for (int index = lastSlash+1; index < sb.toString().length();) { sb.deleteCharAt(index); }
         fileDir = new File(sb.toString());
-        tableViewDraw();
+        tableViewDraw(sortType);
     }
     public void TextFieldEvent(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -186,17 +213,15 @@ public class Controller implements Initializable {
                 if (f.isDirectory()) {
                     previousFileDir.push(fileDir);
                     fileDir = f;
-                    tableViewDraw();
+                    tableViewDraw(sortType);
                 } else {
                     OpenFile(f);
                 }
             }
         }
     }
-    public void ReloadClicked(MouseEvent event) { tableViewDraw(); }
-    public void SearchClicked(MouseEvent event) {}
+    public void ReloadClicked(MouseEvent event) { tableViewDraw(sortType); }
     public void HomeClick(MouseEvent event){}
-    public void CreateClick(MouseEvent event){}
     public void CreateFolder(javafx.event.ActionEvent event){
         TextInputDialog dialog = new TextInputDialog("New folder");
         dialog.setTitle("Створеня папки");
@@ -207,13 +232,13 @@ public class Controller implements Initializable {
         result.ifPresent(s -> {
             File theDir = new File(fileDir.getPath()+"\\"+result.get());
             if (!theDir.exists()) {
-                theDir.mkdirs();
+                if(!theDir.mkdirs()){ System.out.println("The folder was not created.");}
             }
             else{
                 Alert warning = myUtils.setAlert("WARNING", "WARNING","Така папка вжеіснує");
                 Objects.requireNonNull(warning).showAndWait();
             }
-            tableViewDraw();
+            tableViewDraw(sortType);
         });
     }
     public void CreateFile(javafx.event.ActionEvent event){
@@ -231,7 +256,7 @@ public class Controller implements Initializable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                tableViewDraw();
+                tableViewDraw(sortType);
             }else{
                 Alert warning = myUtils.setAlert("WARNING", "WARNING","Такий файл уже існує");
                 Objects.requireNonNull(warning).showAndWait();
@@ -239,30 +264,26 @@ public class Controller implements Initializable {
         });
     }
     public void PasteClick(MouseEvent event) throws IOException {
-        for(File f : copiedFileList){
-            if(f.isDirectory()){
-                System.out.println("Поки не можу копіюввати папки");
-            }
-            else {
-                String copyPath = fileDir.getPath() + "\\" + f.getName();
-                String originPath = f.getPath();
-                Files.copy(Path.of(originPath), Path.of(copyPath), StandardCopyOption.REPLACE_EXISTING);
-            }
+        PasteFileList(pasteFilesFromClipboard(), fileDir.toPath());
+        tableViewDraw(sortType);
+    }
+    public void PasteFileList(List<File> fileList, Path newPath) throws IOException {
+        File destination = fileDir;
+        for(File file : fileList){
+            //FileUtils.copyFileToDirectory(file, destination);
         }
-        tableViewDraw();
     }
     public void CutClick(MouseEvent event){
-        copiedFileList.clear();
-        copiedFileList.addAll(selectedFileList);
+        List<File> copyFileList = new ArrayList<>(selectedFileList);
+        copyFilesToClipboard(copyFileList);
         for (File f : selectedFileList) {
             Desktop.getDesktop().moveToTrash(f);
         }
-        selectedFileList.clear();
-        tableViewDraw();
+        tableViewDraw(sortType);
     }
     public void CopyClick(MouseEvent event){
-        copiedFileList.clear();
-        copiedFileList.addAll(selectedFileList);
+        List<File> copyFileList = new ArrayList<>(selectedFileList);
+        copyFilesToClipboard(copyFileList);
     }
     public void DeleteClick(MouseEvent event){
         Alert alert = myUtils.setAlert("CONFIRMATION", "Підтвердження видалення", "Перемістити в корзину?");
@@ -277,16 +298,63 @@ public class Controller implements Initializable {
                 Desktop.getDesktop().moveToTrash(f);
             }
             selectedFileList.clear();
-            tableViewDraw();
+            tableViewDraw(sortType);
         }
     }
     public void SelectAllClick(MouseEvent event){
+        tableView.getSelectionModel().selectAll();
         ObservableList<TableViewItem> items = tableView.getSelectionModel().getSelectedItems();
         for(TableViewItem item : items){
             selectedFileList.add(item.getFile());
         }
     }
-//    public void TreeViewClicked(MouseEvent event) {
-//        //System.out.println(treeView.getSelectionModel().getSelectedItem().getValue());
-//    }
+    /**Пошук файлів*/
+    public void SearchClicked(MouseEvent event) throws IOException {
+        String request = searchField.getCharacters().toString();
+        List<Path> foundFiles = findFilesByName(Path.of(fileDir.getPath()), request);
+        foundFilesDraw(foundFiles, request);
+    }
+    public void SearchFieldEvent(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER){
+            String request = searchField.getCharacters().toString();
+            List<Path> foundFiles = findFilesByName(Path.of(fileDir.getPath()), request);
+            foundFilesDraw(foundFiles, request);
+        }
+    }
+    public List<Path> findFilesByName(Path startDir, String fileName) throws IOException {
+        List<Path> result;
+        try (Stream<Path> walk = Files.walk(startDir)) {
+            result = walk
+                    .filter(Files::isReadable)      // read permission
+                    .filter(Files::isRegularFile)   // is a file
+                    .filter(p -> p.getFileName().toString().contains(fileName))
+                    .collect(Collectors.toList());
+        }
+        return result;
+    }
+    public void foundFilesDraw(List<Path> foundedFilesList, String request){
+        fileList.clear();
+        for (Path path : foundedFilesList){
+            fileList.add(CreateTableViewItem(path.toFile()));
+        }
+        tableView.setItems(fileList);
+        textField.setText("Результат пошуку по запиту: "+"\""+request+"\"");
+    }
+    /**Сортування файлів*/
+    public void SortByName(ActionEvent event) {
+        tableViewDraw(sortType="name");
+    }
+    public void SortByCreationDate(ActionEvent event) {
+        tableViewDraw(sortType="creation-date");
+    }
+    public void SortByModifyDate(ActionEvent event) {
+        tableViewDraw(sortType="modify-date");
+    }
+    public void SortBySize(ActionEvent event) {
+        tableViewDraw(sortType="size");
+    }
+
+    public TableViewItem CreateTableViewItem(File file){
+        return new TableViewItem(file, calculateSize(file), getModified(file));
+    }
 }

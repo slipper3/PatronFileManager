@@ -99,3 +99,16 @@
 .button:hover{
     -fx-background-color: #b1947f;
 }
+
+.menu-button{
+    -fx-background-color: #d3b090;
+}
+.menu-button:hover{
+    -fx-background-color: #b1947f;
+}
+.menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+.menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}

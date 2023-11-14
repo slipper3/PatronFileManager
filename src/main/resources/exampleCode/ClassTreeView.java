@@ -27,8 +27,10 @@ public abstract class ClassTreeView extends FileExplorerFx {
         int pos = 0;
         for(int i=0; i<fl.length; i++){
 
-            if(!fl[i].isFile()&& !fl[i].isHidden() && fl[i].isDirectory() && n==0)
-            {A[pos] =new TreeItem<>(fl[i].getName(), new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folderOpen.png")))); pos++;}
+            if(!fl[i].isFile() && !fl[i].isHidden() && fl[i].isDirectory() && n==0){
+                A[pos] =new TreeItem<>(fl[i].getName(), new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folderOpen.png"))));
+                pos++;
+            }
             else if(!fl[i].isFile()&& !fl[i].isHidden() && fl[i].isDirectory() && n>0){
                 A[pos] = new TreeItem<>(fl[i].getName(), new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folderOpen.png"))));
                 try{

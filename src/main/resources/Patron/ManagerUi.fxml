@@ -23,6 +23,7 @@
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.control.TreeTableCell?>
 <?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.MenuButton?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="300" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Patron.Controller">
    <VBox prefHeight="800.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="1000.0" spacing="3.0" style="-fx-border-color: #936e4e; -fx-border-width: 2; -fx-background-color: #d3b090;" stylesheets="@../styles/app.css">
@@ -97,7 +98,7 @@
                <Tooltip text="Перезагрузити" />
             </tooltip>
          </Button>
-         <TextField minWidth="150.0" prefHeight="30.0" prefWidth="190.0" promptText="Пошук" HBox.hgrow="NEVER">
+         <TextField fx:id="searchField" minWidth="150.0" prefHeight="30.0" prefWidth="190.0" promptText="Пошук" HBox.hgrow="NEVER" onKeyPressed="#SearchFieldEvent">
             <font>
                <Font name="Segue UI" size="14.0" />
             </font>
@@ -149,7 +150,11 @@
                   <padding>
                      <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                   </padding>
-                  <Button onMouseClicked="#CreateClick" mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <MenuButton mnemonicParsing="false">
+                     <items>
+                        <MenuItem onAction="#CreateFile" mnemonicParsing="false" text="Файл"></MenuItem>
+                        <MenuItem onAction="#CreateFolder" mnemonicParsing="false" text="Папка"></MenuItem>
+                     </items>
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/create.png" />
@@ -161,15 +166,7 @@
                      <tooltip>
                         <Tooltip text="Створити" />
                      </tooltip>
-                     <contextMenu>
-                        <ContextMenu fx:id="cm">
-                           <items>
-                              <MenuItem text="Folder" onAction="#CreateFolder"/>
-                              <MenuItem text="File" onAction="#CreateFile"/>
-                           </items>
-                        </ContextMenu>
-                     </contextMenu>
-                  </Button>
+                  </MenuButton>
                   <Button onMouseClicked="#PasteClick" mnemonicParsing="false" HBox.hgrow="NEVER">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -233,7 +230,13 @@
                      </tooltip>
                   </Button>
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <MenuButton mnemonicParsing="false">
+                     <items>
+                        <MenuItem onAction="#SortByName" mnemonicParsing="false" text="за назвю"></MenuItem>
+                        <MenuItem onAction="#SortByCreationDate" mnemonicParsing="false" text="за датою створення"></MenuItem>
+                        <MenuItem onAction="#SortByModifyDate" mnemonicParsing="false" text="за датою редагування"></MenuItem>
+                        <MenuItem onAction="#SortBySize" mnemonicParsing="false" text="за розміром"></MenuItem>
+                     </items>
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/sotr.png" />
@@ -245,7 +248,7 @@
                      <tooltip>
                         <Tooltip text="Сортувати" />
                      </tooltip>
-                  </Button>
+                  </MenuButton>
                   <Button mnemonicParsing="false" onMouseClicked="#switchToAnalytics">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
