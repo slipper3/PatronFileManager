@@ -80,7 +80,7 @@ public class Utility {
                     FileTypes filetypes = new FileTypes();
                     for (String name : filetypes.hashtable.get(fileType)) {
                         if (Objects.equals(extension, name)) {
-                            TableViewItem item = new TableViewItem(files[i], calculateSize(files[i]), getDate(files[i]));
+                            TableViewItem item = new TableViewItem(files[i], calculateSize(files[i]), getModified(files[i]));
                             System.out.println("Element has added!");
                             fileList.add(item);
                             break;
@@ -138,18 +138,6 @@ public class Utility {
         }
     }
 
-    public String getDate(File f){
-        String dateCreated;
-        try {
-            BasicFileAttributes attr = Files.readAttributes(f.toPath(), BasicFileAttributes.class);
-            FileTime fileTime = attr.creationTime();
-            dateCreated = fileTime.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return dateCreated;
-    }
-
     public String getExtensionByStringHandling(String filename) {
         String extension = "";
         int index = filename.lastIndexOf('.');
@@ -157,6 +145,23 @@ public class Utility {
             extension = filename.substring(index + 1);
         }
         return extension;
+    }
+
+    public static String getModified(File f){
+        String dateModified;
+        try {
+            BasicFileAttributes attr = Files.readAttributes(f.toPath(), BasicFileAttributes.class);
+            FileTime fileTime = attr.lastModifiedTime();
+            dateModified = fileTime.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        int index = dateModified.indexOf("T");
+        StringBuilder sb = new StringBuilder(dateModified);
+        sb.replace(index, index+1, " ");
+        index = dateModified.lastIndexOf(":");
+        for (int i = index+3; i < sb.toString().length();) { sb.deleteCharAt(i); }
+        return sb.toString();
     }
 
     public void clearFileList(){

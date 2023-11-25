@@ -68,3 +68,19 @@
 .combo-box{
     -fx-background-color: #f8f0dd;
 }
+
+.default-color0.chart-pie{
+    -fx-pie-color: red;
+}
+
+.default-color1.chart-pie{
+    -fx-pie-color: green;
+}
+
+.default-color2.chart-pie{
+    -fx-pie-color: red;
+}
+
+.default-color3.chart-pie{
+    -fx-pie-color: green;
+}

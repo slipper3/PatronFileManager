@@ -119,13 +119,11 @@ public class AnalyticsControl implements Initializable {
             AnalyticTable.getItems().clear();
             drawFiles(event);
         }
-        pieChartData = FXCollections.observableArrayList();
+        spaceChart.getData().clear();
         Drive drive = driveCombo.getSelectionModel().getSelectedItem();
         PieChart.Data usedData = new PieChart.Data("Використане місце " + drive.getUsedPer() + " %", drive.getDblUsedSpace());
         PieChart.Data remData = new PieChart.Data("Вільне місце " + drive.getRemPer() + " %", drive.getDblFreeSpace());
-        pieChartData.add(usedData);
-        pieChartData.add(remData);
-        spaceChart.setData(pieChartData);
+        spaceChart.getData().addAll(usedData, remData);
         lblUsed.setText(drive.getUsedSpace());
         lblFree.setText(drive.getFreeSpace());
     }

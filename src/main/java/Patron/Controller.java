@@ -226,7 +226,7 @@ public class Controller implements Initializable {
                 if(!theDir.mkdirs()){ System.out.println("The folder was not created.");}
             }
             else{
-                Alert warning = myUtils.setAlert("WARNING", "WARNING","Така папка вжеіснує");
+                Alert warning = myUtils.setAlert("WARNING", "WARNING","Така папка вже існує");
                 Objects.requireNonNull(warning).showAndWait();
             }
             tableViewDraw(sortType);

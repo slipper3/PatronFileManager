@@ -26,10 +26,7 @@ public class FileTypes {
         documents.add("ods");
         documents.add("ppt");
         documents.add("pptx");
-        documents.add("tif");
-        documents.add("tiff");
         documents.add("bmp");
-        documents.add("gif");
         documents.add("eps");
         documents.add("cr2");
         documents.add("nef");
@@ -40,6 +37,9 @@ public class FileTypes {
         images.add("png");
         images.add("jpg");
         images.add("jpeg");
+        images.add("tif");
+        images.add("tiff");
+        images.add("gif");
 
         ArrayList<String> music = new ArrayList<>();
         music.add("mp3");
