@@ -265,7 +265,7 @@ public class Controller implements Initializable {
                 refreshTreeView(treeView.getRoot(), fileDir);
             }
             else{
-                Alert warning = myUtils.setAlert("WARNING", "WARNING","Така папка вжеіснує");
+                Alert warning = myUtils.setAlert("WARNING", "WARNING","Така папка вже існує");
                 Objects.requireNonNull(warning).showAndWait();
             }
         });

@@ -39,6 +39,9 @@
             <HBox.margin>
                <Insets />
             </HBox.margin>
+            <tooltip>
+               <Tooltip text="Пошук..." />
+            </tooltip>
          </ProgressBar>
          <Pane HBox.hgrow="ALWAYS">
             <HBox.margin>
@@ -99,7 +102,7 @@
                   </font>
                </Label>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
+            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
                <VBox alignment="CENTER" prefHeight="10.0" prefWidth="60.0" HBox.hgrow="NEVER">
                   <Button fx:id="imageButton" mnemonicParsing="false" onAction="#drawFiles" styleClass="button">
                      <graphic>
@@ -110,14 +113,12 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Фото" />
+                     </tooltip>
                   </Button>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </VBox>
-               <VBox prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+               <VBox HBox.hgrow="NEVER">
                   <Button fx:id="videoButton" mnemonicParsing="false" onAction="#drawFiles" styleClass="button">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -127,14 +128,12 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Відео" />
+                     </tooltip>
                   </Button>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </VBox>
-               <VBox prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
+               <VBox HBox.hgrow="NEVER">
                   <Button fx:id="documentButton" mnemonicParsing="false" onAction="#drawFiles" styleClass="button">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -144,15 +143,16 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Документи" />
+                     </tooltip>
                   </Button>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </VBox>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="200.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
+            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #f8f0dd;" VBox.vgrow="NEVER">
                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
                   <Button fx:id="musicButton" mnemonicParsing="false" onAction="#drawFiles" styleClass="button">
                      <graphic>
@@ -163,12 +163,10 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Аудіо" />
+                     </tooltip>
                   </Button>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </VBox>
                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
                   <Button fx:id="archiveButton" mnemonicParsing="false" onAction="#drawFiles" styleClass="button">
@@ -180,12 +178,10 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Архіви" />
+                     </tooltip>
                   </Button>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </VBox>
                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="60.0" HBox.hgrow="NEVER">
                   <Button fx:id="appButton" mnemonicParsing="false" onAction="#drawFiles" styleClass="button">
@@ -197,13 +193,14 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Застосунки" />
+                     </tooltip>
                   </Button>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="66.0" text="size">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </VBox>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
             </HBox>
             <Pane prefHeight="85.0" prefWidth="600.0" style="-fx-background-color: #f8f0dd;" />
          </VBox>
