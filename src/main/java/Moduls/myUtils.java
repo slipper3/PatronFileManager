@@ -19,12 +19,34 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class myUtils {
+    private static List<String> excludedFiles = Arrays.asList(
+            "Config.msi",
+            "Config.Msi",
+            "$RECYCLE.BIN",
+            "$Recycle.Bin",
+            "Documents and Settings",
+            "System Volume Information",
+            "Thumbs.db",
+            "desktop.ini",
+            "pagefile.sys",
+            "pagefile.sys",
+            "swapfile.sys",
+            "Memory.dmp",
+            "IconCache.db",
+            "boot.ini",
+            "BCDBOOT.log",
+            "$Windows.~BT",
+            "$Windows.~WS",
+            "Recovery",
+            "Boot");
+    public static final List<File> searchResult = new ArrayList<>();
+    public static long sizeResult = 0;
+    private static Thread thread = new Thread();
+
     public myUtils(){}
     public static void copyFilesToClipboard(List<File> files) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -139,12 +161,12 @@ public class myUtils {
             long sizeInGb = sizeInByte/(1024*1024*1024); s = sizeInGb + " GB"; return s; //Якщо розмір більше 1гб
         }
     }
+
     public static long calculateSizeInt(File f){
         /*
          * Функція розрахунку ваги файлу
          */
 
-        long result = 0;
         long sizeInByte=0;
         Path path;
 
@@ -152,19 +174,21 @@ public class myUtils {
         if(IsDrive(f)){
             return f.getTotalSpace()/(1024*1024*1024);
         }
-        if(IsFolder(f)){
-            File[] files = f.listFiles();
-            for(File file : files){ result += calculateSizeInt(file); }
-            return result;
+        if(!IsFolder(f)){
+//            File[] files = f.listFiles();
+//            if (files !=null)
+//                for(File file : files){ sizeResult += calculateSizeInt(file); }
+//            return sizeResult;
+            path = Paths.get(f.toURI()); // Отримуємо шлях до файлу
+            //sizeInByte = f.getTotalSpace(); // terrible idea cz sob subfolder e 199GB, 99GB
+            try {
+                sizeInByte = Files.size(path);//at least works ^_^ отримуємо розмір файлу в байтах
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return sizeInByte;
         }
 
-        path = Paths.get(f.toURI()); // Отримуємо шлях до файлу
-        //sizeInByte = f.getTotalSpace(); // terrible idea cz sob subfolder e 199GB, 99GB
-        try {
-            sizeInByte = Files.size(path);//at least works ^_^ отримуємо розмір файлу в байтах
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return sizeInByte;
     }
     public static String getDate(File f){
@@ -245,16 +269,28 @@ public class myUtils {
             }
         }
     }
-    public static List<Path> findFilesByName(Path startDir, String fileName) throws IOException {
-        List<Path> result;
-        try (Stream<Path> walk = Files.walk(startDir)) {
-            result = walk
-                    .filter(Files::isReadable)      // read permission
-                    .filter(Files::isRegularFile)   // is a file
-                    .filter(p -> p.getFileName().toString().contains(fileName))
-                    .collect(Collectors.toList());
-        }
-        return result;
+    public static List<File> findFilesByName(File startDir, String fileName) {
+        File[] files = startDir.listFiles();
+        if (files != null)
+            for (File file : files){
+                if (file.isDirectory()) {
+                    if (!isExcluded(file) && file.getName().contains(fileName))
+                        searchResult.add(file);
+                    System.out.println(file);
+                    findFilesByName(file, fileName);
+                }
+                else if (!isExcluded(file) && file.getName().contains(fileName))
+                    searchResult.add(file); System.out.println(file);
+            }
+        return searchResult;
     }
-
+    public static boolean isHidden(Path path){
+        return !path.toFile().isHidden();
+    }
+    public static boolean isExcluded(File file){
+        return excludedFiles.contains(file.getName());
+    }
+    public static String getLowName(File file){
+        return file.getName().toLowerCase();
+    }
 }

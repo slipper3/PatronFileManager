@@ -24,6 +24,8 @@
 <?import javafx.scene.control.TreeTableCell?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="300" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Patron.Controller">
    <VBox prefHeight="800.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="1000.0" spacing="3.0" style="-fx-border-color: #936e4e; -fx-border-width: 2; -fx-background-color: #d3b090;" stylesheets="@../styles/app.css">
@@ -81,7 +83,12 @@
                <Tooltip text="Вище по директорії" />
             </tooltip>
          </Button>
-         <TextField fx:id="textField" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" HBox.hgrow="ALWAYS" onKeyPressed="#TextFieldEvent"/>
+         <AnchorPane minWidth="200.0" prefHeight="30.0" prefWidth="595.0" HBox.hgrow="ALWAYS">
+            <children>
+               <TextField fx:id="textField" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" onKeyPressed="#TextFieldEvent"/>
+               <ProgressBar fx:id="progressBar" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" visible="false"/>
+            </children>
+         </AnchorPane>
          <Button onMouseClicked="#ReloadClicked" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -266,15 +273,14 @@
                <AnchorPane prefHeight="714.0" prefWidth="723.0" VBox.vgrow="ALWAYS">
                   <TableView fx:id="tableView" onMouseClicked="#tableViewClicked" editable="true" layoutY="7.0" prefHeight="719.0" prefWidth="723.0" stylesheets="@../styles/app.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn id="Name" fx:id="name" editable="false" minWidth="60.0" prefWidth="369.0" sortable="false" text="Name" />
-                        <TableColumn id="Size" fx:id="size" editable="false" minWidth="60.0" prefWidth="173.0" sortable="false" text="Size" />
-                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Date" />
+                        <TableColumn id="Name" fx:id="name" editable="false" minWidth="60.0" prefWidth="423.0" sortable="false" text="Назва" />
+                        <TableColumn id="Size" fx:id="size" editable="false" minWidth="60.0" prefWidth="120.0" sortable="false" text="Розмір" />
+                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Дара створення" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <ListView fx:id="listView" editable="true" prefHeight="726.0" prefWidth="723.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </AnchorPane>
             </VBox>
          </AnchorPane>

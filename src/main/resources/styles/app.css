@@ -48,23 +48,23 @@
 .table-row-cell:selected{
     -fx-background-color: #d3b090;
 }
-.table-view .virtual-flow .scroll-bar:vertical,
-.table-view .virtual-flow .scroll-bar:vertical .track,
-.table-view .virtual-flow .scroll-bar:vertical .track-background,
-.table-view .virtual-flow .scroll-bar:horizontal,
-.table-view .virtual-flow .scroll-bar:horizontal .track,
-.table-view .virtual-flow .scroll-bar:horizontal .track-background {
+.virtual-flow .scroll-bar:vertical,
+.virtual-flow .scroll-bar:vertical .track,
+.virtual-flow .scroll-bar:vertical .track-background,
+.virtual-flow .scroll-bar:horizontal,
+.virtual-flow .scroll-bar:horizontal .track,
+.virtual-flow .scroll-bar:horizontal .track-background {
     -fx-background-color: #f8f0dd;
 }
-.table-view .virtual-flow .scroll-bar .increment-button,
-.table-view .virtual-flow .scroll-bar .decrement-button {
+.virtual-flow .scroll-bar .increment-button,
+.virtual-flow .scroll-bar .decrement-button {
     -fx-opacity: 0;
     -fx-padding: 2;
 }
-.table-view .virtual-flow .scroll-bar:vertical .thumb{
+.virtual-flow .scroll-bar:vertical .thumb{
     -fx-background-color:  #d3b090
 }
-.table-view .virtual-flow .scroll-bar:horizontal .thumb {
+.virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color:  #d3b090
 }
 .table-view:focused .table-row-cell:focused {
@@ -116,4 +116,11 @@
 
 .imageview{
     -fx-background-color: transparent;
+}
+
+.progress-bar .bar{
+    -fx-background-color: linear-gradient(to right, #936e4e, #f8f0dd);
+}
+.progress-bar. trak{
+    -fx-background-radius: 20;
 }

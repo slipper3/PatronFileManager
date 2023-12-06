@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.util.Objects;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ManagerUI.fxml")));
