@@ -144,6 +144,7 @@ public class Controller implements Initializable {
                             if (file.isDirectory() && !isExcluded(file)) {
                                 TreeItem<TreeViewItem> childItem = new TreeItem<>(new TreeViewItem(file));
                                 child.getChildren().add(childItem);
+                                loadChildren(childItem, file);
                             }
                 } else if (child.getValue().getFile().isDirectory()) {
                     refreshTreeView(child, currentDir);
