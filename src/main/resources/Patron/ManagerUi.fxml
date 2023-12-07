@@ -275,7 +275,7 @@
                      <columns>
                         <TableColumn id="Name" fx:id="name" editable="false" minWidth="60.0" prefWidth="423.0" sortable="false" text="Назва" />
                         <TableColumn id="Size" fx:id="size" editable="false" minWidth="60.0" prefWidth="120.0" sortable="false" text="Розмір" />
-                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Дара створення" />
+                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Дара редагування" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
