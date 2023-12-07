@@ -70,7 +70,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        fileDir = new File("D:\\");
+        fileDir = new File("C:\\");
         name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         size.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         date.setCellValueFactory(new PropertyValueFactory<>("modDate"));
@@ -81,12 +81,18 @@ public class Controller implements Initializable {
         rootItem.setExpanded(true);
         // Заповнюємо дерево накопичувачами, підключеними до комп'ютера
         File[] roots = File.listRoots();
-        if (roots != null) {
-            for (File drive : roots) {
-                TreeItem<TreeViewItem> driveItem = new TreeItem<>(new TreeViewItem(drive));
-                rootItem.getChildren().add(driveItem);
-                // Поширюємо дочірні елементи на одну ступінь глибше
-                populateTreeView(driveItem);
+        for (File drive : roots) {
+            TreeItem<TreeViewItem> driveItem = new TreeItem<>(new TreeViewItem(drive));
+            rootItem.getChildren().add(driveItem);
+            // Додавання пустого елемента, щоб мати відкритий знак "плюс" для автоматичного розгортання
+            if (driveItem.getValue().getFile().listFiles() != null) {
+                driveItem.getChildren().add(new TreeItem<>());
+                driveItem.expandedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        driveItem.getChildren().clear();
+                        loadChildren(driveItem, drive);
+                    }
+                });
             }
         }
         // Встановлюємо кореневий елемент в TreeView
@@ -95,18 +101,34 @@ public class Controller implements Initializable {
         treeView.setCellFactory(param -> new TreeCell());
     }
     /**Популізація дерева файлів*/
-    public void populateTreeView(TreeItem<TreeViewItem> parent) {
-        if (parent != null && parent.getChildren().isEmpty()) {
-            File[] files = parent.getValue().getFile().listFiles();
-            if (files != null)
-                for (File file : files)
-                    if (file.isDirectory() && !isExcluded(file)) {
-                        TreeItem<TreeViewItem> child = new TreeItem<>(new TreeViewItem(file));
-                        parent.getChildren().add(child);
-                        System.out.println("additional children added");
+    private void loadChildren(TreeItem<TreeViewItem> parent, File parentFile) {
+        File[] files = parentFile.listFiles();
+        int children = 0;
+        if (files != null)
+            for (File file : files)
+                if (file.isDirectory() && !isExcluded(file)) {
+                    TreeItem<TreeViewItem> child = new TreeItem<>(new TreeViewItem(file));
+                    parent.getChildren().add(child);
+                    // Додавання пустого елемента, щоб мати відкритий знак "плюс" для автоматичного розгортання
+                    File[] childFiles = child.getValue().getFile().listFiles();
+                    if (childFiles != null)
+                        for (File f : childFiles)
+                            if (f.isDirectory() && !isExcluded(f)) {
+                                children++;
+                                System.out.println("Файл у "+child.getValue().getFile().getName()+" "+f.getName());
+                            }
+                    if (children >= 1) {
+                        child.getChildren().add(new TreeItem<>());
+                        child.expandedProperty().addListener((observable, oldValue, newValue) -> {
+                            if (newValue) {
+                                child.getChildren().clear();
+                                loadChildren(child, file);
+                            }
+                        });
                     }
-        }
+                }
     }
+    /**Оноволення дерева файлів*/
     private void refreshTreeView(TreeItem<TreeViewItem> root, File currentDir) {
         for(TreeItem<TreeViewItem> child : root.getChildren()){
             if(child.getValue().getFile().isDirectory() && child.getValue().getFile().getPath().equals(currentDir.getPath())){
@@ -123,26 +145,15 @@ public class Controller implements Initializable {
                 refreshTreeView(child, currentDir);
         }
     }
+    /**Обробник натиску на дерево файлів*/
     public void TreeViewClicked(MouseEvent event) {
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1){
             TreeItem<TreeViewItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null && selectedItem.getChildren().isEmpty()) {
-                File selectedDir = selectedItem.getValue().getFile();
-                for(File file : Objects.requireNonNull(selectedDir.listFiles())){
-                    if (file.isDirectory() && !isExcluded(file)) {
-                        TreeItem<TreeViewItem> child = new TreeItem<>(new TreeViewItem(file));
-                        selectedItem.getChildren().add(child);
-                        // Поширюємо дочірні елементи на одну ступінь глибше
-                        populateTreeView(child);
-                    }
-                }
-            }
             if (selectedItem != null && selectedItem.getValue().getFile().isDirectory()) {
                 previousFileDir.push(fileDir);
                 fileDir = treeView.getSelectionModel().getSelectedItem().getValue().getFile();
                 tableViewDraw(sortType);
             }
-            //refreshTreeView();
         }
 
     }
@@ -164,12 +175,10 @@ public class Controller implements Initializable {
                 Arrays.sort(Objects.requireNonNull(files), Comparator.comparingLong(myUtils::calculateSizeInt));
                 break;
         }
-        for(File file : Objects.requireNonNull(files)){
-            if (file.isDirectory() && !isExcluded(file)){ fileList.add(CreateTableViewItem(file)); }
-        }
-        for(File file : files){
-            if (!file.isDirectory() && !isExcluded(file)){ fileList.add(CreateTableViewItem(file)); }
-        }
+        for(File file : Objects.requireNonNull(files))
+            if (file.isDirectory() && !isExcluded(file)) fileList.add(CreateTableViewItem(file));
+        for(File file : files)
+            if (!file.isDirectory() && !isExcluded(file)) fileList.add(CreateTableViewItem(file));
         if(myUtils.IsDrive(fileDir)){
             FileSystemView fileSystemView = FileSystemView.getFileSystemView();
             searchField.setPromptText("Пошук у "+fileSystemView.getSystemDisplayName(fileDir));
@@ -238,15 +247,13 @@ public class Controller implements Initializable {
                     previousFileDir.push(fileDir);
                     fileDir = f;
                     tableViewDraw(sortType);
-                } else {
-                    OpenFile(f);
-                }
+                } else OpenFile(f);
             }
         }
     }
     public void ReloadClicked(MouseEvent event) { tableViewDraw(sortType); refreshTreeView(treeView.getRoot(), fileDir); }
     public void HomeClick(MouseEvent event){
-        fileDir = new File("D:\\");
+        fileDir = new File("C:\\");
         tableViewDraw(sortType);
         refreshTreeView(treeView.getRoot(), fileDir);
     }
@@ -337,9 +344,8 @@ public class Controller implements Initializable {
         alert.showAndWait();
 
         if(alert.getResult() == buttonYes) {
-            for (File f : selectedFileList) {
+            for (File f : selectedFileList)
                 Desktop.getDesktop().moveToTrash(f);
-            }
             selectedFileList.clear();
             tableViewDraw(sortType);
             refreshTreeView(treeView.getRoot(), fileDir);
@@ -348,9 +354,8 @@ public class Controller implements Initializable {
     public void SelectAllClick(MouseEvent event){
         tableView.getSelectionModel().selectAll();
         ObservableList<TableViewItem> items = tableView.getSelectionModel().getSelectedItems();
-        for(TableViewItem item : items){
+        for(TableViewItem item : items)
             selectedFileList.add(item.getFile());
-        }
     }
     /**Пошук файлів*/
     public void SearchClicked(MouseEvent event) throws IOException {
@@ -405,6 +410,7 @@ public class Controller implements Initializable {
 
         tableViewDraw(sortType="size");
     }
+    /**Створення об'єктів класу TableViewItem*/
     public TableViewItem CreateTableViewItem(File file){
         return new TableViewItem(file, calculateSize(file), getModified(file));
     }
