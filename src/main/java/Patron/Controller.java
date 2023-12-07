@@ -104,19 +104,21 @@ public class Controller implements Initializable {
     private void loadChildren(TreeItem<TreeViewItem> parent, File parentFile) {
         File[] files = parentFile.listFiles();
         int children = 0;
-        if (files != null)
-            for (File file : files)
+        if (files != null) {
+            for (File file : files) {
                 if (file.isDirectory() && !isExcluded(file)) {
                     TreeItem<TreeViewItem> child = new TreeItem<>(new TreeViewItem(file));
                     parent.getChildren().add(child);
                     // Додавання пустого елемента, щоб мати відкритий знак "плюс" для автоматичного розгортання
                     File[] childFiles = child.getValue().getFile().listFiles();
-                    if (childFiles != null)
-                        for (File f : childFiles)
+                    if (childFiles != null) {
+                        for (File f : childFiles) {
                             if (f.isDirectory() && !isExcluded(f)) {
                                 children++;
-                                System.out.println("Файл у "+child.getValue().getFile().getName()+" "+f.getName());
+                                //System.out.println("Файл у "+child.getValue().getFile().getName()+" "+f.getName());
                             }
+                        }
+                    }
                     if (children >= 1) {
                         child.getChildren().add(new TreeItem<>());
                         child.expandedProperty().addListener((observable, oldValue, newValue) -> {
@@ -127,22 +129,26 @@ public class Controller implements Initializable {
                         });
                     }
                 }
+            }
+        }
     }
     /**Оноволення дерева файлів*/
     private void refreshTreeView(TreeItem<TreeViewItem> root, File currentDir) {
         for(TreeItem<TreeViewItem> child : root.getChildren()){
-            if(child.getValue().getFile().isDirectory() && child.getValue().getFile().getPath().equals(currentDir.getPath())){
-                child.getChildren().clear();
-                File[] files = child.getValue().getFile().listFiles();
-                if (files != null)
-                    for (File file : files)
-                        if(file.isDirectory() && !isExcluded(file)){
-                            TreeItem<TreeViewItem> childItem = new TreeItem<>(new TreeViewItem(file));
-                            child.getChildren().add(childItem);
-                        }
+            if (child.getValue() != null) {
+                if (child.getValue().getFile().isDirectory() && child.getValue().getFile().getPath().equals(currentDir.getPath())) {
+                    child.getChildren().clear();
+                    File[] files = child.getValue().getFile().listFiles();
+                    if (files != null)
+                        for (File file : files)
+                            if (file.isDirectory() && !isExcluded(file)) {
+                                TreeItem<TreeViewItem> childItem = new TreeItem<>(new TreeViewItem(file));
+                                child.getChildren().add(childItem);
+                            }
+                } else if (child.getValue().getFile().isDirectory()) {
+                    refreshTreeView(child, currentDir);
+                }
             }
-            else if (child.getValue().getFile().isDirectory())
-                refreshTreeView(child, currentDir);
         }
     }
     /**Обробник натиску на дерево файлів*/
@@ -177,8 +183,10 @@ public class Controller implements Initializable {
         }
         for(File file : Objects.requireNonNull(files))
             if (file.isDirectory() && !isExcluded(file)) fileList.add(CreateTableViewItem(file));
+
         for(File file : files)
             if (!file.isDirectory() && !isExcluded(file)) fileList.add(CreateTableViewItem(file));
+
         if(myUtils.IsDrive(fileDir)){
             FileSystemView fileSystemView = FileSystemView.getFileSystemView();
             searchField.setPromptText("Пошук у "+fileSystemView.getSystemDisplayName(fileDir));
@@ -202,9 +210,7 @@ public class Controller implements Initializable {
                     Controller.previousFileDir.push(Controller.fileDir);
                     Controller.fileDir = f;
                     tableViewDraw(sortType);
-                }else {
-                    OpenFile(f);
-                }
+                } else OpenFile(f);
             }
         }
     }
@@ -219,15 +225,25 @@ public class Controller implements Initializable {
     }
     public void BackClick(MouseEvent event){
         if(previousFileDir.isEmpty()){return;}
-        forwardFileDir.push(fileDir);
-        fileDir = previousFileDir.pop();
-        tableViewDraw(sortType);
+        if(previousFileDir.peek().exists()) {
+            forwardFileDir.push(fileDir);
+            fileDir = previousFileDir.pop();
+            tableViewDraw(sortType);
+        }else {
+            previousFileDir.pop();
+            BackClick(event);
+        }
     }
     public void ForwardClick(MouseEvent event){
         if(forwardFileDir.isEmpty()){return;}
-        previousFileDir.push(fileDir);
-        fileDir = forwardFileDir.pop();
-        tableViewDraw(sortType);
+        if(forwardFileDir.peek().exists()) {
+            previousFileDir.push(fileDir);
+            fileDir = forwardFileDir.pop();
+            tableViewDraw(sortType);
+        }else {
+            forwardFileDir.pop();
+            ForwardClick(event);
+        }
     }
     public void DirUpClicked(MouseEvent event) {
         if(myUtils.IsDrive(fileDir)){return;}
@@ -255,7 +271,7 @@ public class Controller implements Initializable {
     public void HomeClick(MouseEvent event){
         fileDir = new File("C:\\");
         tableViewDraw(sortType);
-        refreshTreeView(treeView.getRoot(), fileDir);
+        //refreshTreeView(treeView.getRoot(), fileDir);
     }
     public void CreateFolder(javafx.event.ActionEvent event){
         TextInputDialog dialog = new TextInputDialog("New folder");
@@ -346,6 +362,7 @@ public class Controller implements Initializable {
         if(alert.getResult() == buttonYes) {
             for (File f : selectedFileList)
                 Desktop.getDesktop().moveToTrash(f);
+
             selectedFileList.clear();
             tableViewDraw(sortType);
             refreshTreeView(treeView.getRoot(), fileDir);
@@ -389,9 +406,9 @@ public class Controller implements Initializable {
         textField.setVisible(true);
         progressBar.setVisible(false);
         textField.setText("Результат пошуку по запиту: "+"\""+request+"\"");
-        for (File file : foundedFilesList){
+        for (File file : foundedFilesList)
             fileList.add(CreateTableViewItem(file));
-        }
+
         tableView.setItems(fileList);
         tableView.setVisible(true);
     }
