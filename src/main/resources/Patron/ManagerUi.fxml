@@ -3,7 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -18,15 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TreeTableView?>
-<?import javafx.scene.control.TreeTableCell?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="300" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Patron.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="300" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #f8f0dd;" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Patron.Controller">
    <VBox prefHeight="800.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="1000.0" spacing="3.0" style="-fx-border-color: #936e4e; -fx-border-width: 2; -fx-background-color: #d3b090;" stylesheets="@../styles/app.css">
          <opaqueInsets>
@@ -35,7 +29,7 @@
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
-         <Button fx:id="back" onMouseClicked="#BackClick" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="button" HBox.hgrow="NEVER">
+         <Button fx:id="back" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" onMouseClicked="#BackClick" prefHeight="25.0" prefWidth="25.0" styleClass="button" HBox.hgrow="NEVER">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   <cursor>
@@ -51,7 +45,7 @@
                <Tooltip text="Назад" />
             </tooltip>
          </Button>
-         <Button fx:id="forward" onMouseClicked="#ForwardClick" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false">
+         <Button fx:id="forward" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#ForwardClick">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   <cursor>
@@ -67,7 +61,7 @@
                <Tooltip text="Вперед" />
             </tooltip>
          </Button>
-         <Button onMouseClicked="#DirUpClicked" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" HBox.hgrow="NEVER">
+         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#DirUpClicked" HBox.hgrow="NEVER">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   <cursor>
@@ -84,12 +78,12 @@
             </tooltip>
          </Button>
          <AnchorPane minWidth="200.0" prefHeight="30.0" prefWidth="595.0" HBox.hgrow="ALWAYS">
-            <children>
-               <TextField fx:id="textField" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" onKeyPressed="#TextFieldEvent"/>
-               <ProgressBar fx:id="progressBar" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" visible="false"/>
-            </children>
+            <TextField fx:id="textField" minWidth="200.0" onKeyPressed="#TextFieldEvent" prefHeight="30.0"
+                       prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+            <ProgressBar fx:id="progressBar" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" visible="false"
+                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
          </AnchorPane>
-         <Button onMouseClicked="#ReloadClicked" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false">
+         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#ReloadClicked">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   <cursor>
@@ -105,12 +99,12 @@
                <Tooltip text="Перезагрузити" />
             </tooltip>
          </Button>
-         <TextField fx:id="searchField" minWidth="150.0" prefHeight="30.0" prefWidth="190.0" promptText="Пошук" HBox.hgrow="NEVER" onKeyPressed="#SearchFieldEvent">
+         <TextField fx:id="searchField" minWidth="150.0" onKeyPressed="#SearchFieldEvent" prefHeight="30.0" prefWidth="190.0" promptText="Пошук" HBox.hgrow="NEVER">
             <font>
                <Font name="Segue UI" size="14.0" />
             </font>
          </TextField>
-         <Button onMouseClicked="#SearchClicked" mnemonicParsing="false">
+         <Button mnemonicParsing="false" onMouseClicked="#SearchClicked">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   <cursor>
@@ -131,7 +125,7 @@
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #f8f0dd;">
             <VBox prefHeight="753.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <AnchorPane VBox.vgrow="NEVER">
-                  <Button onMouseClicked="#HomeClick" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="37.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" text="Home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" onMouseClicked="#HomeClick" prefHeight="37.0" prefWidth="267.0" style="-fx-background-color: #f8f0dd;" text="Home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/home.png" />
@@ -159,8 +153,8 @@
                   </padding>
                   <MenuButton mnemonicParsing="false">
                      <items>
-                        <MenuItem onAction="#CreateFile" mnemonicParsing="false" text="Файл"></MenuItem>
-                        <MenuItem onAction="#CreateFolder" mnemonicParsing="false" text="Папка"></MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#CreateFile" text="Файл" />
+                        <MenuItem mnemonicParsing="false" onAction="#CreateFolder" text="Папка" />
                      </items>
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -174,7 +168,7 @@
                         <Tooltip text="Створити" />
                      </tooltip>
                   </MenuButton>
-                  <Button onMouseClicked="#PasteClick" mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <Button mnemonicParsing="false" onMouseClicked="#PasteClick" HBox.hgrow="NEVER">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/past.png" />
@@ -187,7 +181,7 @@
                         <Tooltip text="Вставити" />
                      </tooltip>
                   </Button>
-                  <Button onMouseClicked="#CutClick" mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <Button mnemonicParsing="false" onMouseClicked="#CutClick" HBox.hgrow="NEVER">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/cut.png" />
@@ -200,7 +194,7 @@
                         <Tooltip text="Вирізати" />
                      </tooltip>
                   </Button>
-                  <Button onMouseClicked="#CopyClick" mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <Button mnemonicParsing="false" onMouseClicked="#CopyClick" HBox.hgrow="NEVER">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/copy.png" />
@@ -213,7 +207,7 @@
                         <Tooltip text="Скопіювати" />
                      </tooltip>
                   </Button>
-                  <Button onMouseClicked="#DeleteClick" mnemonicParsing="false" HBox.hgrow="NEVER">
+                  <Button mnemonicParsing="false" onMouseClicked="#DeleteClick" HBox.hgrow="NEVER">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/delete.png" />
@@ -226,7 +220,7 @@
                         <Tooltip text="Видалити" />
                      </tooltip>
                   </Button>
-                  <Button onMouseClicked="#SelectAllClick" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="34.0">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#SelectAllClick" prefHeight="30.0" prefWidth="34.0">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../Images/SelectAll.png" />
@@ -239,10 +233,10 @@
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <MenuButton mnemonicParsing="false">
                      <items>
-                        <MenuItem onAction="#SortByName" mnemonicParsing="false" text="за назвю"></MenuItem>
-                        <MenuItem onAction="#SortByCreationDate" mnemonicParsing="false" text="за датою створення"></MenuItem>
-                        <MenuItem onAction="#SortByModifyDate" mnemonicParsing="false" text="за датою редагування"></MenuItem>
-                        <MenuItem onAction="#SortBySize" mnemonicParsing="false" text="за розміром"></MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#SortByName" text="за назвю" />
+                        <MenuItem mnemonicParsing="false" onAction="#SortByCreationDate" text="за датою створення" />
+                        <MenuItem mnemonicParsing="false" onAction="#SortByModifyDate" text="за датою редагування" />
+                        <MenuItem mnemonicParsing="false" onAction="#SortBySize" text="за розміром" />
                      </items>
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -271,11 +265,11 @@
                   </Button>
                </HBox>
                <AnchorPane prefHeight="714.0" prefWidth="723.0" VBox.vgrow="ALWAYS">
-                  <TableView fx:id="tableView" onMouseClicked="#tableViewClicked" editable="true" layoutY="7.0" prefHeight="719.0" prefWidth="723.0" stylesheets="@../styles/app.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableView" editable="true" layoutY="7.0" onMouseClicked="#tableViewClicked" prefHeight="719.0" prefWidth="723.0" stylesheets="@../styles/app.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
                         <TableColumn id="Name" fx:id="name" editable="false" minWidth="60.0" prefWidth="423.0" sortable="false" text="Назва" />
                         <TableColumn id="Size" fx:id="size" editable="false" minWidth="60.0" prefWidth="120.0" sortable="false" text="Розмір" />
-                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Дара редагування" />
+                        <TableColumn id="Date" fx:id="date" editable="false" minWidth="60.0" prefWidth="180.0" sortable="false" text="Дата редагування" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

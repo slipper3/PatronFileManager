@@ -66,9 +66,9 @@
          <AnchorPane prefHeight="565.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <TableView fx:id="AnalyticTable" onMouseClicked="#tableViewClicked" prefHeight="563.0" prefWidth="600.0" stylesheets="@../styles/analytic.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
-                  <TableColumn fx:id="nameAnalytic" minWidth="60.0" prefWidth="295.0" text="Name" />
-                  <TableColumn fx:id="sizeAnalytic" minWidth="60.0" prefWidth="152.0" text="Size" />
-                  <TableColumn fx:id="dateAnalytic" minWidth="60.0" prefWidth="192.0" text="Data" />
+                  <TableColumn fx:id="nameAnalytic" minWidth="60.0" prefWidth="295.0" text="Ім'я" />
+                  <TableColumn fx:id="sizeAnalytic" minWidth="60.0" prefWidth="152.0" text="Розмір" />
+                  <TableColumn fx:id="dateAnalytic" minWidth="60.0" prefWidth="192.0" text="Дата редагування" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
