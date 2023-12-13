@@ -78,10 +78,8 @@
             </tooltip>
          </Button>
          <AnchorPane minWidth="200.0" prefHeight="30.0" prefWidth="595.0" HBox.hgrow="ALWAYS">
-            <TextField fx:id="textField" minWidth="200.0" onKeyPressed="#TextFieldEvent" prefHeight="30.0"
-                       prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-            <ProgressBar fx:id="progressBar" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" visible="false"
-                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+            <TextField fx:id="textField" minWidth="200.0" onKeyPressed="#TextFieldEvent" prefHeight="30.0" prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <ProgressBar fx:id="progressBar" minWidth="200.0" prefHeight="30.0" prefWidth="595.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </AnchorPane>
          <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#ReloadClicked">
             <graphic>
@@ -233,7 +231,7 @@
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <MenuButton mnemonicParsing="false">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#SortByName" text="за назвю" />
+                        <MenuItem mnemonicParsing="false" onAction="#SortByName" text="за назвою" />
                         <MenuItem mnemonicParsing="false" onAction="#SortByCreationDate" text="за датою створення" />
                         <MenuItem mnemonicParsing="false" onAction="#SortByModifyDate" text="за датою редагування" />
                         <MenuItem mnemonicParsing="false" onAction="#SortBySize" text="за розміром" />
